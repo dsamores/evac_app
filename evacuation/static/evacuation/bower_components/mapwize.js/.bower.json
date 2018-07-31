@@ -1,0 +1,37 @@
+{
+  "name": "mapwize.js",
+  "main": [
+    "dist/mapwize.js",
+    "dist/mapwize.css"
+  ],
+  "version": "2.6.2",
+  "homepage": "https://github.com/mapwize/mapwize.js-dist",
+  "authors": [
+    "Mapwize"
+  ],
+  "description": "Mapwize Javascript SDK",
+  "keywords": [
+    "mapwize",
+    "indoor",
+    "inside",
+    "building",
+    "map",
+    "maps",
+    "leaflet"
+  ],
+  "license": "See LICENSE.md",
+  "ignore": [
+    "demo",
+    "doc"
+  ],
+  "_release": "2.6.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.6.2",
+    "commit": "67c1ee9c0243d94a945dc3c6f9286bb735cf3473"
+  },
+  "_source": "https://github.com/Mapwize/mapwize.js-dist.git",
+  "_target": "^2.6.2",
+  "_originalSource": "mapwize.js-dist",
+  "_direct": true
+}
