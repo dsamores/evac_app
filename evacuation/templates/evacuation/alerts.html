@@ -119,59 +119,54 @@
         </header>
 
         <div class="content mt-3">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="clearfix">
-                            <i class="fa fa-check bg-flat-color-5 p-3 font-2xl mr-3 float-left text-light"></i>
-                            <div class="h5 text-secondary mb-0 mt-1">Evacuation successful</div>
-                            <div class="text-muted font-weight-bold font-xs small">The evacuation has concluded, please make your way back to your office</div>
-                        </div>
-                    </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>New alerts</h4>
                 </div>
-            </div>
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="clearfix">
-                            <i class="fa fa-info-circle bg-info p-3 font-2xl mr-3 float-left text-light"></i>
-                            <div class="h5 text-secondary mb-0 mt-1">Firefighter check</div>
-                            <div class="text-muted font-weight-bold font-xs small">Firefighters are now checking the building</div>
+                <div class="card-body">
+                    {% if unread_notifications %}
+                        {% for notification in unread_notifications %}
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="clearfix">
+                                        <i class="fa {{ notification.icon_class }} p-3 font-2xl mr-3 float-left text-light"></i>
+                                        <div class="h5 text-secondary mb-0 mt-1">{{ notification.title }}</div>
+                                        <div class="text-muted font-weight-bold font-xs small">{{ notification.description }}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="clearfix">
-                            <i class="fa fa-warning bg-warning p-3 font-2xl mr-3 float-left text-light"></i>
-                            <div class="h5 text-secondary mb-0 mt-1">Blocked exit</div>
-                            <div class="text-muted font-weight-bold font-xs small">Exit 1 is blocked, please use exit next to kitchen</div>
-                        </div>
-                        <div class="b-b-1 pt-3"></div>
-                        <hr>
-                        <div class="more-info pt-2" style="margin-bottom:-10px;">
-                            <a class="font-weight-bold font-xs btn-block text-muted small" href="#">See the map<i class="fa fa-angle-right float-right font-lg"></i></a>
-                        </div>
-                    </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No new alerts</p>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="clearfix">
-                            <i class="fa fa-exclamation-circle bg-danger p-3 font-2xl mr-3 float-left text-light"></i>
-                            <div class="h5 text-secondary mb-0 mt-1">Evacuate</div>
-                            <div class="text-muted font-weight-bold font-xs small">Please make your way out of the building as soon as possible</div>
+            <div class="card">
+                <div class="card-header">
+                    <h4>Previous alerts</h4>
+                </div>
+                <div class="card-body">
+                    {% if read_notifications %}
+                        {% for notification in read_notifications %}
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="clearfix">
+                                        <i class="fa {{ notification.icon_class }} p-3 font-2xl mr-3 float-left text-light"></i>
+                                        <div class="h5 text-secondary mb-0 mt-1">{{ notification.title }}</div>
+                                        <div class="text-muted font-weight-bold font-xs small">{{ notification.description }}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="b-b-1 pt-3"></div>
-                        <hr>
-                        <div class="more-info pt-2" style="margin-bottom:-10px;">
-                            <a class="font-weight-bold font-xs btn-block text-muted small" href="#">See closest exit <i class="fa fa-angle-right float-right font-lg"></i></a>
-                        </div>
-                    </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No previous alerts</p>
+                    {% endif %}
                 </div>
             </div>
 
@@ -186,7 +181,6 @@
     <script src="{% static 'evacuation/js/main.js' %}"></script>
 
     <script src="{% static 'evacuation/js/lib/chart-js/Chart.bundle.js' %}"></script>
-    <script src="{% static 'evacuation/js/widgets.js' %}"></script>
 
 </body>
 </html>
