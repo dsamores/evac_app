@@ -5,7 +5,9 @@ from .models import Notification
 
 
 def index(request):
-    return HttpResponse("Hello, world!!")
+    last_notification_list = Notification.objects.order_by('-date')[:5]
+    context = {'last_notification_list': last_notification_list}
+    return render(request, 'evacuation/index.html', context)
 
 
 def building_map(request):
