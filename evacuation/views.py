@@ -1,7 +1,10 @@
-from django.http import HttpResponse
 from django.shortcuts import render
 
 from .models import Notification
+
+from django.contrib.auth.models import User
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 def index(request):
@@ -24,3 +27,12 @@ def alerts(request):
         'read_notifications': read_notifications,
     }
     return render(request, 'evacuation/alerts.html', context)
+
+
+@api_view(['POST'])
+def new_user(request):
+    user = User()
+    user.save()
+    user.username = 'anon_%d' % user.id
+    user.save()
+    return Response({"user_id": user.id})
