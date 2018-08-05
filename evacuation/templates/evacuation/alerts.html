@@ -18,6 +18,12 @@
                             <div class="h5 text-secondary mb-0 mt-1">{{ notification.title }}</div>
                             <div class="text-muted font-weight-bold font-xs small">{{ notification.description }}</div>
                         </div>
+                        {% if notification.action_url %}
+                        <hr>
+                        <div class="more-info pt-2" style="margin-bottom:-10px;">
+                            <a class="font-weight-bold font-xs btn-block text-muted small" href="{{ notification.action_url }}">{{ notification.action_text }}<i class="fa fa-angle-right float-right font-lg"></i></a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -43,6 +49,12 @@
                             <div class="h5 text-secondary mb-0 mt-1">{{ notification.title }}</div>
                             <div class="text-muted font-weight-bold font-xs small">{{ notification.description }}</div>
                         </div>
+                        {% if notification.action_url %}
+                        <hr>
+                        <div class="more-info pt-2" style="margin-bottom:-10px;">
+                            <a class="font-weight-bold font-xs btn-block text-muted small" href="{{ notification.action_url }}">{{ notification.action_text }}<i class="fa fa-angle-right float-right font-lg"></i></a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

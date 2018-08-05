@@ -20,8 +20,8 @@ def building_map(request):
 
 
 def alerts(request):
-    unread_notifications = Notification.objects.filter(read=False).order_by('-date')
-    read_notifications = Notification.objects.filter(read=True).order_by('-date')[:5]
+    unread_notifications = Notification.objects.filter(read=False, active=True).order_by('-date_sent')
+    read_notifications = Notification.objects.filter(read=True, active=True).order_by('-date_sent')[:5]
     context = {
         'unread_notifications': unread_notifications,
         'read_notifications': read_notifications,
