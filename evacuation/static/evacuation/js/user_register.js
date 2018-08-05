@@ -9,6 +9,27 @@
 
 var userId = localStorage.getItem('userId');
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
 $(document).ready(function($) {
 
 	"use strict";
@@ -43,10 +64,32 @@ $(document).ready(function($) {
                 userId = response["user_id"];
                 localStorage.setItem('userId', userId);
                 console.log("User created: " + userId);
+                console.log("Reloading...");
+                location.reload();
             });
     }
     else{
-        console.log("User detected: " + userId);
+        console.log("User detected: " + userId + ". Logging in...");
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $.post("/auto_login", { user_id: userId })
+            .done(function( response ) {
+                if(userId != response["user_id"]){
+                    alert("Something fishy going on...");
+                    return;
+                }
+                console.log("Logged in user: " + userId);
+                if(response["refresh"]){
+                    console.log("Reloading...");
+                    location.reload();
+                }
+            });
         // Maybe load to an HTML tag
     }
 

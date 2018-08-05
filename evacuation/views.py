@@ -1,32 +1,36 @@
 from django.shortcuts import render
 
-from .models import Notification
+from .models import Message, Notification
 
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.contrib.auth import login
+from django.utils import timezone
 
 
 def index(request):
-    last_notification_list = Notification.objects.order_by('-date')[:5]
-    context = {'last_notification_list': last_notification_list}
-    return render(request, 'evacuation/index.html', context)
+    return render(request, 'evacuation/index.html', {})
 
 
 def building_map(request):
-    last_notification_list = Notification.objects.order_by('-date')[:5]
-    context = {'last_notification_list': last_notification_list}
-    return render(request, 'evacuation/building-map.html', context)
+    return render(request, 'evacuation/building-map.html', {})
 
 
 def alerts(request):
-    unread_notifications = Notification.objects.filter(read=False, active=True).order_by('-date_sent')
-    read_notifications = Notification.objects.filter(read=True, active=True).order_by('-date_sent')[:5]
+    notifications = Notification.objects.filter(
+        message__active=True, user=request.user
+    ).order_by('-sent_time')[:10]
     context = {
-        'unread_notifications': unread_notifications,
-        'read_notifications': read_notifications,
+        'notifications': notifications,
     }
     return render(request, 'evacuation/alerts.html', context)
+
+
+def login_user(request, user_id):
+    user = User.objects.get(pk=user_id)
+    user.backend = 'django.contrib.auth.backends.ModelBackend'
+    login(request, user)
 
 
 @api_view(['POST'])
@@ -35,4 +39,22 @@ def new_user(request):
     user.save()
     user.username = 'anon_%d' % user.id
     user.save()
-    return Response({"user_id": user.id})
+    login_user(request, user.id)
+    return Response({"user_id": request.user.id})
+
+
+@api_view(['POST'])
+def auto_login(request):
+    user_id = request.POST['user_id']
+    refresh = False
+    if not request.user.is_authenticated:
+        login_user(request, user_id)
+        refresh = True
+    return Response({"user_id": request.user.id, "refresh": refresh})
+
+
+@api_view(['POST'])
+def read_notifications(request):
+    notification_ids = request.POST.getlist('notification_ids[]')
+    Notification.objects.filter(id__in=notification_ids).update(read_time=timezone.now())
+    return Response({"success": True})

@@ -1,67 +1,50 @@
 {% extends "evacuation/base.html" %}
 
-{% block title %}Alerts{% endblock %}
+
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h4>New alerts</h4>
-    </div>
-    <div class="card-body">
-        {% if unread_notifications %}
-            {% for notification in unread_notifications %}
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="clearfix">
-                            <i class="fa {{ notification.icon_class }} p-3 font-2xl mr-3 float-left text-light"></i>
-                            <div class="h5 text-secondary mb-0 mt-1">{{ notification.title }}</div>
-                            <div class="text-muted font-weight-bold font-xs small">{{ notification.description }}</div>
-                        </div>
-                        {% if notification.action_url %}
-                        <hr>
-                        <div class="more-info pt-2" style="margin-bottom:-10px;">
-                            <a class="font-weight-bold font-xs btn-block text-muted small" href="{{ notification.action_url }}">{{ notification.action_text }}<i class="fa fa-angle-right float-right font-lg"></i></a>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <p>No new alerts</p>
-        {% endif %}
-    </div>
-</div>
 
-<div class="card">
-    <div class="card-header">
-        <h4>Previous alerts</h4>
-    </div>
-    <div class="card-body">
-        {% if read_notifications %}
-            {% for notification in read_notifications %}
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="clearfix">
-                            <i class="fa {{ notification.icon_class }} p-3 font-2xl mr-3 float-left text-light"></i>
-                            <div class="h5 text-secondary mb-0 mt-1">{{ notification.title }}</div>
-                            <div class="text-muted font-weight-bold font-xs small">{{ notification.description }}</div>
-                        </div>
-                        {% if notification.action_url %}
-                        <hr>
-                        <div class="more-info pt-2" style="margin-bottom:-10px;">
-                            <a class="font-weight-bold font-xs btn-block text-muted small" href="{{ notification.action_url }}">{{ notification.action_text }}<i class="fa fa-angle-right float-right font-lg"></i></a>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
+<div class="breadcrumbs">
+    <div class="col-12">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>{% block title %}Alerts{% endblock %}</h1>
             </div>
-            {% endfor %}
-        {% else %}
-            <p>No previous alerts</p>
-        {% endif %}
+        </div>
     </div>
 </div>
+{% if notifications %}
+    {% for notification in notifications %}
+    <div class=" col-12 card {% if not notification.read_time %}card-new{% endif %}">
+        <div class="card-body">
+            <div class="clearfix">
+                <i class="fa {{ notification.message.icon_class }} p-3 font-2xl mr-3 float-left text-light"></i>
+                <div class="mb-0 font-xs small">
+                    {% if not notification.read_time %}
+                    <span class="text-green">New!</span>
+                    {% endif %}
+                    {{ notification.format_time }}
+                </div>
+                <div class="h5 text-secondary mb-0 mt-1">{{ notification.message.title }}</div>
+                <div class="text-muted font-weight-bold font-xs small">{{ notification.message.description }}</div>
+            </div>
+            {% if notification.message.action_url %}
+            <hr>
+            <div class="more-info pt-2" style="margin-bottom:-10px;">
+                <a class="font-weight-bold font-xs btn-block text-muted small" href="{{ notification.message.action_url }}">{{ notification.message.action_text }}<i class="fa fa-angle-right float-right font-lg"></i></a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if not notification.read_time %}
+    <input type="hidden" name="notification_id" value="{{ notification.id }}">
+    {% endif %}
+    {% endfor %}
+{% else %}
+<div class=" col-12 card">
+    <div class="card-body">
+        <p>No new alerts</p>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
