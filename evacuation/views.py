@@ -1,12 +1,14 @@
 from django.shortcuts import render
 
-from .models import Message, Notification
+from .models import Notification, Interaction
 
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import login
 from django.utils import timezone
+import json
+import datetime
 
 
 def index(request):
@@ -57,4 +59,20 @@ def auto_login(request):
 def read_notifications(request):
     notification_ids = request.POST.getlist('notification_ids[]')
     Notification.objects.filter(id__in=notification_ids).update(read_time=timezone.now())
+    return Response({"success": True})
+
+
+@api_view(['POST'])
+def save_interactions(request):
+    interactions_raw = json.loads(request.POST.getlist('interactions')[0])
+    for interaction_raw in interactions_raw:
+        assert request.user.id == int(interaction_raw['userId'])
+        interaction = Interaction(
+            user=request.user, type=interaction_raw['type'],
+            description=interaction_raw['description'],
+            page=interaction_raw['page'],
+            element=interaction_raw['element'],
+            time=datetime.datetime.fromtimestamp(interaction_raw['time'] / 1000.0),
+        )
+        interaction.save()
     return Response({"success": True})

@@ -52,7 +52,7 @@ class Notification(models.Model):
     def format_time(self):
         if timezone.now().date() == self.sent_time.date():
             return 'Today %s' % self.sent_time.strftime('%I:%M %p')
-        if timezone.now().date() - 1 == self.sent_time.date():
+        if timezone.now().date() - timedelta(days=1) == self.sent_time.date():
             return 'Yesterday %s' % self.sent_time.strftime('%I:%M %p')
         return self.sent_time.strftime('%d-%b %I:%M %p')
 
