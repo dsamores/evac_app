@@ -55,3 +55,12 @@ class Notification(models.Model):
         if timezone.now().date() - 1 == self.sent_time.date():
             return 'Yesterday %s' % self.sent_time.strftime('%I:%M %p')
         return self.sent_time.strftime('%d-%b %I:%M %p')
+
+
+class Interaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.CharField(max_length=63)
+    description = models.TextField(blank=True, null=True)
+    page = models.CharField(max_length=127, blank=True, null=True)
+    element = models.CharField(max_length=127, blank=True, null=True)
+    time = models.DateTimeField()
