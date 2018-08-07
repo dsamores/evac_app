@@ -7,3 +7,6 @@
 .card-new {
     background-color: beige;
 }
+.leaflet-layer img {
+    max-width: none!important;
+}

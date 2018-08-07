@@ -22,26 +22,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    var map = Mapwize.map('myMapId', {
-        apiKey: 'e32cf47a2a7a0df9e93d13fa4535b940',
-        center: [-37.798976, 144.962882],
-        zoom: 21,
-        floor: 6
-    }, function (err, mapInstance) {
-        // This callback is called when the map is initialized (Or if there is an error during initialization)
-
-        if (err) {
-            console.error('An error occur during map initialization', err);
-        }
-        else {
-            console.log('map is now loaded');
-
-            map.showDirections({placeId: '5b56878579f1e20004858b3e'}, {placeId: '5b5686efd18dd20004fd88bd'});
-            //map.showDirections({placeId: '5b56878579f1e20004858b3e'}, {placeId: '5b56866a2c17ca0004ccfcd3'});
-
-        }
-    });
-</script>
+<script src="{% static 'evacuation/js/building_map.js' %}"></script>
 {% endblock %}
 
