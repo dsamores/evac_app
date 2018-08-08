@@ -2,3 +2,6 @@
 venv/
 *.pyc
 *.sqlite3
+data/
+static/
+evac_app.pem

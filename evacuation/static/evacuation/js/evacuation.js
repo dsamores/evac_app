@@ -8,6 +8,10 @@ function Interaction(type, description, page, element){
     this.time = Date.now();
 
     this.save = function(){
+        if(this.userId == null){
+            console.log('User ID hasn\'t been set yet. Skipping this interaction.');
+            return;
+        }
         var interactions = localStorage.getItem("interactions");
         if(!interactions)
             interactions = new Array();

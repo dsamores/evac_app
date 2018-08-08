@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+
+def get(key, default=None):
+    v = os.environ.get(key)
+    if v is None and default is None:
+        print("Warning: No value set for %s" % key)
+    return v or default
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +33,7 @@ SECRET_KEY = '8us#sy#h44*ys4*s8$&m!@dmkx6zf&_f5nq40q23@!z+lr3!p0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,14 +90,26 @@ WSGI_APPLICATION = 'evac_app.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'evac_app',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '127.0.0.1',
+#         'PORT': '8887',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'evac_app',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '8887',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': get('POSTGRES_DB', 'museumos-develop'),
+        'USER': get('POSTGRES_USER', ''),
+        'PASSWORD': get('POSTGRES_PASSWORD', ''),
+        'HOST': get('POSTGRES_HOST', 'localhost'),
+        'PORT': get('POSTGRES_PORT', 5432),
+        'CONN_MAX_AGE': 600,  # number of seconds database connections should persist for
     }
 }
 
@@ -130,4 +150,5 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'

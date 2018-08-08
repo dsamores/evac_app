@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    hostname: db
+    env_file: dev.env
+    ports:
+      - "5432"
+    volumes:
+      # keep data locally
+      # If changing the POSTGRES_DB name, be sure to delete the /data folder
+      - ./data/:/var/lib/postgresql/data/pgdata 
+
+  web:
+    build:
+      context: "."
+      args:
+        IS_LOCAL_ENV: "true"
+    env_file: dev.env
+    volumes:
+      - .:/code
+      - ./media/:/media/      
+    links:
+      - db
+    depends_on:
+      - db
+    entrypoint: /entrypoint.sh
+    command: bash -c "python3 manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
