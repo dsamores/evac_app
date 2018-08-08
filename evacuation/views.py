@@ -20,12 +20,14 @@ def building_map(request):
 
 
 def alerts(request):
-    notifications = Notification.objects.filter(
-        message__active=True, user=request.user
-    ).order_by('-sent_time')[:10]
-    context = {
-        'notifications': notifications,
-    }
+    context = {}
+    if request.user.is_authenticated():
+        notifications = Notification.objects.filter(
+            message__active=True, user=request.user
+        ).order_by('-sent_time')[:10]
+        context = {
+            'notifications': notifications,
+        }
     return render(request, 'evacuation/alerts.html', context)
 
 
