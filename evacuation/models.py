@@ -64,3 +64,14 @@ class Interaction(models.Model):
     page = models.CharField(max_length=127, blank=True, null=True)
     element = models.CharField(max_length=127, blank=True, null=True)
     time = models.DateTimeField()
+
+
+class Obstacle(models.Model):
+    name = models.CharField(max_length=63)
+    place_id = models.CharField(max_length=31, blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '%s' % self.name

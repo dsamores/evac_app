@@ -5,3 +5,4 @@ venv/
 data/
 static/
 evac_app.pem
+local_settings.py

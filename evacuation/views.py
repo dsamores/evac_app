@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Notification, Interaction
+from .models import Notification, Interaction, Obstacle
 
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
@@ -9,6 +9,7 @@ from django.contrib.auth import login
 from django.utils import timezone
 import json
 import datetime
+from django.core import serializers
 
 
 def index(request):
@@ -16,7 +17,12 @@ def index(request):
 
 
 def building_map(request):
-    return render(request, 'evacuation/building-map.html', {})
+    obstacles = Obstacle.objects.filter(active=True)
+
+    context = {
+        'obstacles': serializers.serialize('json', obstacles),
+    }
+    return render(request, 'evacuation/building-map.html', context)
 
 
 def alerts(request):

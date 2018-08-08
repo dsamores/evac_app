@@ -90,16 +90,6 @@ WSGI_APPLICATION = 'evac_app.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'evac_app',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
-#         'HOST': '127.0.0.1',
-#         'PORT': '8887',
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -152,3 +142,8 @@ USE_TZ = False
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

@@ -5,7 +5,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from .models import Message, Notification
+from .models import Message, Notification, Obstacle
+
+admin.site.register(Obstacle)
 
 
 @admin.register(Message)

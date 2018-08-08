@@ -8,8 +8,8 @@
 <script type="text/javascript" src="{% static 'evacuation/bower_components/mapwize.js/dist/mapwize.js' %}"></script>
 <link rel="stylesheet" href="{% static 'evacuation/bower_components/mapwize.js/dist/mapwize.css' %}" />
 <style>
-#myMapId {
-       height: 600px;
+#indoor-map {
+       height: 550px;
 }
 #map {
        position:absolute; top:0; bottom:0; width:100%; height: 100%;
@@ -18,10 +18,15 @@
 {% endblock %}
 
 {% block content %}
-<div id="myMapId"></div>
+<div id="indoor-map"></div>
 {% endblock %}
 
 {% block scripts %}
+<script>
+    var images_url = "{% static 'evacuation/images/' %}";
+    var obstacles = {{ obstacles|safe }};
+    console.log(obstacles);
+</script>
 <script src="{% static 'evacuation/js/building_map.js' %}"></script>
 {% endblock %}
 
