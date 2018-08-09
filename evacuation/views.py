@@ -1,19 +1,64 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import Notification, Interaction, Obstacle
 
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.contrib.auth import login
+from django.contrib.auth import login, logout, authenticate
 from django.utils import timezone
 import json
 import datetime
 from django.core import serializers
+from django.contrib import messages
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return redirect('browser_login')
     return render(request, 'evacuation/index.html', {})
+
+
+def browser_login(request):
+    if request.method == 'GET':
+        return render(request, 'evacuation/login.html', {})
+    else:
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(username=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            messages.add_message(request, messages.ERROR, "Incorrect email or password")
+            return render(request, 'evacuation/login.html')
+
+
+def register(request):
+    if request.method == 'GET':
+        return render(request, 'evacuation/register.html')
+    else:
+        email = request.POST['email']
+        password = request.POST['password']
+        if User.objects.filter(username=email).exists():
+            messages.add_message(request, messages.ERROR, "Email already taken")
+            return render(request, 'evacuation/register.html')
+
+        user = User.objects.create_user(email, email, password)
+
+        user.save()
+        login(request, user)
+        return redirect('index')
+
+
+def forget(request):
+    return render(request, 'evacuation/forget.html', {})
+
+
+def logout_view(request):
+    logout(request)
+    messages.add_message(request, messages.SUCCESS, "Successfully logged out")
+    return redirect('browser_login')
 
 
 def building_map(request):

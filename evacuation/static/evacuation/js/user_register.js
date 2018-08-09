@@ -59,38 +59,37 @@ $(document).ready(function($) {
 
     // load user_id
     if(userId == null){
-        $.post( "/new_user")
-            .done(function( response ) {
-                userId = response["user_id"];
-                localStorage.setItem('userId', userId);
-                console.log("User created: " + userId);
-                console.log("Reloading...");
-                location.reload();
-            });
+//        $.post( "/new_user")
+//            .done(function( response ) {
+//                userId = response["user_id"];
+//                localStorage.setItem('userId', userId);
+//                console.log("User created: " + userId);
+//                console.log("Reloading...");
+//                location.reload();
+//            });
     }
     else{
-        console.log("User detected: " + userId + ". Logging in...");
-        var csrftoken = getCookie('csrftoken');
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-        $.post("/auto_login", { user_id: userId })
-            .done(function( response ) {
-                if(userId != response["user_id"]){
-                    alert("Something fishy going on...");
-                    return;
-                }
-                console.log("Logged in user: " + userId);
-                if(response["refresh"]){
-                    console.log("Reloading...");
-                    location.reload();
-                }
-            });
-        // Maybe load to an HTML tag
+//        console.log("User detected: " + userId + ". Logging in...");
+//        var csrftoken = getCookie('csrftoken');
+//        $.ajaxSetup({
+//            beforeSend: function(xhr, settings) {
+//                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+//                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+//                }
+//            }
+//        });
+//        $.post("/auto_login", { user_id: userId })
+//            .done(function( response ) {
+//                if(userId != response["user_id"]){
+//                    alert("Something fishy going on...");
+//                    return;
+//                }
+//                console.log("Logged in user: " + userId);
+//                if(response["refresh"]){
+//                    console.log("Reloading...");
+//                    location.reload();
+//                }
+//            });
     }
 
 
