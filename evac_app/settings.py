@@ -143,6 +143,8 @@ USE_TZ = False
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+SESSION_COOKIE_AGE = 2592000
+
 try:
     from .local_settings import *
 except ImportError:

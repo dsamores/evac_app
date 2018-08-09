@@ -50,3 +50,16 @@
     </a>
 </div>
 {% endblock %}
+
+
+{% block scripts %}
+<script>
+    {% if not user_id %}
+    console.log('Something wrong with user id. Please check.');
+    {% else %}
+    userId = {{ user_id }};
+    console.log(userId);
+    localStorage.setItem('userId', userId);
+    {% endif %}
+</script>
+{% endblock %}

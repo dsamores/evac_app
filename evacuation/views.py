@@ -16,12 +16,14 @@ from django.contrib import messages
 def index(request):
     if not request.user.is_authenticated:
         return redirect('browser_login')
-    return render(request, 'evacuation/index.html', {})
+    return render(request, 'evacuation/index.html', {'user_id': request.user.id})
 
 
 def browser_login(request):
     if request.method == 'GET':
-        return render(request, 'evacuation/login.html', {})
+        if request.user.is_authenticated:
+            return redirect('index')
+        return render(request, 'evacuation/login.html')
     else:
         email = request.POST['email']
         password = request.POST['password']
@@ -36,6 +38,8 @@ def browser_login(request):
 
 def register(request):
     if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('index')
         return render(request, 'evacuation/register.html')
     else:
         email = request.POST['email']
@@ -52,16 +56,19 @@ def register(request):
 
 
 def forget(request):
-    return render(request, 'evacuation/forget.html', {})
+    if request.user.is_authenticated:
+        return redirect('index')
+    return render(request, 'evacuation/forget.html')
 
 
 def logout_view(request):
     logout(request)
-    messages.add_message(request, messages.SUCCESS, "Successfully logged out")
-    return redirect('browser_login')
+    return render(request, 'evacuation/logout.html')
 
 
 def building_map(request):
+    if not request.user.is_authenticated:
+        return redirect('browser_login')
     obstacles = Obstacle.objects.filter(active=True)
 
     context = {
@@ -71,6 +78,8 @@ def building_map(request):
 
 
 def alerts(request):
+    if not request.user.is_authenticated:
+        return redirect('browser_login')
     context = {}
     if request.user.is_authenticated:
         notifications = Notification.objects.filter(

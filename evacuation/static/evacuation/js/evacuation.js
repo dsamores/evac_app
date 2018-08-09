@@ -36,6 +36,16 @@ function flushInteractions(){
 }
 
 $(document).ready(function($) {
+
+    var csrftoken = getCookie('csrftoken');
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     (new Interaction('access', '', window.location.href, null)).save();
     var notification_ids = $.map( $('[name="notification_id"]'), function( n, i ) {
       return n.value;
