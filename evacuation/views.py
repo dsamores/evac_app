@@ -27,7 +27,7 @@ def building_map(request):
 
 def alerts(request):
     context = {}
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         notifications = Notification.objects.filter(
             message__active=True, user=request.user
         ).order_by('-sent_time')[:10]
