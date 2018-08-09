@@ -3,6 +3,6 @@ venv/
 *.pyc
 *.sqlite3
 data/
-static/
+/static/
 evac_app.pem
 local_settings.py
