@@ -5,5 +5,77 @@
 {% block title %}Survey{% endblock %}
 
 {% block content %}
-holi mundo
+<div class="col-12">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                <span class="badge badge-pill badge-success">Success</span>
+                    {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <div class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
+                <span class="badge badge-pill badge-primary">Info</span>
+                    {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                <span class="badge badge-pill badge-danger">Error</span>
+                    {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            Post evacuation - Survey
+        </div>
+        <div class="card-body card-block">
+            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                {% csrf_token %}
+                {% for question in survey %}
+                    {% if question.type == 'TextQuestion' %}
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label for="q_{{ question.id }}" class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                            </div>
+                            <div class="col-12">
+                                <textarea name="q_{{ question.id }}" id="q_{{ question.id }}" rows="3" placeholder="" class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    {% elif question.type == 'ChoicesQuestion' %}
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check">
+                                  {% for choice in question.get_choices %}
+                                    <div class="radio">
+                                      <label for="c_{{ choice.id }}" class="form-check-label ">
+                                        <input type="radio" id="c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" required>{{ choice.text }}
+                                      </label>
+                                    </div>
+                                  {% endfor %}
+                              </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+              <div class="form-actions form-group">
+                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+               </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
