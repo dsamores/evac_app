@@ -16,7 +16,12 @@ from django.contrib import messages
 def index(request):
     if not request.user.is_authenticated:
         return redirect('browser_login')
-    return render(request, 'evacuation/index.html', {'user_id': request.user.id})
+    webpush = {'group': 'group1'}
+    context = {
+        'user_id': request.user.id,
+        'webpush': webpush,
+    }
+    return render(request, 'evacuation/index.html', context)
 
 
 def browser_login(request):

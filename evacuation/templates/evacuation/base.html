@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 <head>
     {% load static %}
+    {% load webpush_notifications %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
@@ -26,6 +27,8 @@
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
+    {% webpush_header %}
+
     {% block styles %}{% endblock %}
 
 </head>
@@ -38,8 +41,8 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./">Evacuation Expert</a>
-                <a class="navbar-brand hidden" href="./">EE</a>
+                <a class="navbar-brand" href="./">Evacuation Assistant</a>
+                <a class="navbar-brand hidden" href="./">EA</a>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -60,6 +63,7 @@
                         <a href="/logout"> <i class="menu-icon fa fa-power-off"></i>Logout</a>
                     </li>
                 </ul>
+                {% webpush_button %}
             </div>
         </nav>
     </aside>

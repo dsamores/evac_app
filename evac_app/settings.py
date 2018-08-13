@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'polymorphic',
+    'webpush.config.WebpushConfig',
 ]
 
 MIDDLEWARE = [
@@ -146,6 +146,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 SESSION_COOKIE_AGE = 2592000
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BITCO7uEeST4-T8mPgafQ24OLZqT5ExueTxb98W3DxpFoh5XSm0MMhORGu_n94RAdxu-QSo9phxiAl198eV7NSA",
+    "VAPID_PRIVATE_KEY":"pixR8T7qw1a9JY390dNpV73-OP5UzUjXHs1nweQnFoI",
+    "VAPID_ADMIN_EMAIL": "davidamores3@gmail.com"
+}
 
 try:
     from .local_settings import *
