@@ -10,21 +10,18 @@ def index(request):
             if answers:
                 messages.add_message(request, messages.INFO, "Survey already taken")
                 return render(request, 'survey/survey.html')
-            # survey = list(TextQuestion.objects.filter(survey__name='Post evacuation'))
-            # survey += list(ChoicesQuestion.objects.filter(survey__name='Post evacuation'))
-            # survey.sort(key=lambda x: x.order)
             survey = Question.objects.filter(survey__name='Post evacuation').order_by('order')
             context = {'survey': survey}
             return render(request, 'survey/survey.html', context)
         return render(request, 'evacuation/login.html')
     else:
-        # email = request.POST['email']
-        # password = request.POST['password']
-
-        for question_id, answer in request.POST.items():
+        for question_id, answer_text in request.POST.items():
             if 'q_' in question_id:
-                question_id = int(question_id[2:])
-                question = Question.objects.get(pk=question_id)
+                question = Question.objects.get(pk=int(question_id[2:]))
+                if question.type == 'SingleChoice':
+                    answer_text = answer_text[2:]
+                answer = Answer(question=question, user=request.user, text=answer_text)
+                answer.save()
 
         messages.add_message(request, messages.SUCCESS, "Answers submitted successfully")
         return render(request, 'survey/survey.html')

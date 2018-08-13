@@ -43,7 +43,7 @@
             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                 {% csrf_token %}
                 {% for question in survey %}
-                    {% if question.type == 'TextQuestion' %}
+                    {% if question.type == 'Text' %}
                         <div class="row form-group">
                             <div class="col-12">
                                 <label for="q_{{ question.id }}" class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
@@ -52,7 +52,7 @@
                                 <textarea name="q_{{ question.id }}" id="q_{{ question.id }}" rows="3" placeholder="" class="form-control" required></textarea>
                             </div>
                         </div>
-                    {% elif question.type == 'ChoicesQuestion' %}
+                    {% elif question.type == 'SingleChoice' %}
                         <div class="row form-group">
                             <div class="col-12">
                                 <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
@@ -71,9 +71,13 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-              <div class="form-actions form-group">
-                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-               </div>
+                {% if survey %}
+                <div class="form-actions form-group">
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                </div>
+                {% else %}
+                No more questions
+                {% endif %}
             </form>
         </div>
     </div>
