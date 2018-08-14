@@ -19,6 +19,22 @@
 
 {% block content %}
 <div id="indoor-map"></div>
+
+<div class="modal modal-backdrop fade show" id="staticModal">
+    <div class="modal-dialog modal-sm" role="document">
+            <div class='loader-container'>
+              <div class='loader'>
+                <div class='loader--dot'></div>
+                <div class='loader--dot'></div>
+                <div class='loader--dot'></div>
+                <div class='loader--dot'></div>
+                <div class='loader--dot'></div>
+                <div class='loader--dot'></div>
+                <div class='loader--text'></div>
+              </div>
+            </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

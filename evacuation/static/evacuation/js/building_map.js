@@ -24,6 +24,7 @@ function Place(mwPlace){
     }
 
     this.getRoutesAndDisplay = function(){
+        startLoading();
         var self = this;
         var blocked = false;
         for(exitId in exitIds){
@@ -48,6 +49,7 @@ function Place(mwPlace){
                         map.startDirections(self.exitRoutes[0]);
                     }
                 }
+                stopLoading();
             });
         }
     }
@@ -66,6 +68,7 @@ function Location(lat, lng){
     }
 
     this.getRoutesAndDisplay = function(){
+        startLoading();
         var self = this;
         var blocked = false;
         var numRoutes = 4;
@@ -90,6 +93,7 @@ function Location(lat, lng){
                     if(self.exitRoutes.length >= numRoutes){
                         self.sortRoutes();
                         map.startDirections(self.exitRoutes[0]);
+                        stopLoading();
                     }
                 }
             });
@@ -97,7 +101,16 @@ function Location(lat, lng){
     }
 }
 
+function startLoading(){
+    $('#staticModal').show();
+}
+
+function stopLoading(){
+    $('#staticModal').hide();
+}
+
 $(document).ready(function($) {
+    startLoading();
     map = Mapwize.map('indoor-map', {
         apiKey: 'e32cf47a2a7a0df9e93d13fa4535b940',
         center: [-37.803704, 144.959694],
@@ -111,6 +124,7 @@ $(document).ready(function($) {
             console.log('map is now loaded');
             // mapInstance.showDirections({placeId: '5b6904757c31b70004d8b28b'}, {placeId: '5b68fc6e7c31b70004d8b26a'});
         }
+        stopLoading();
     });
 
     for(i in obstacles){
