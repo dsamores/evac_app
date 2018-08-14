@@ -78,3 +78,19 @@ class Obstacle(models.Model):
 
     def __str__(self):
         return '%s' % self.name
+
+
+class EvacUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    age = models.PositiveIntegerField(blank=True, null=True)
+    GENDERS = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('None', 'Prefer to not say'),
+    )
+    gender = models.CharField(
+        max_length=15,
+        choices=GENDERS,
+        blank=True, null=True
+    )
+    building_occupant = models.BooleanField(default=True, blank=True)

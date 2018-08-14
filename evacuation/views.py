@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .models import Notification, Interaction, Obstacle
+from .models import Notification, Interaction, Obstacle, EvacUser
 
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
@@ -54,8 +54,16 @@ def register(request):
             return render(request, 'evacuation/register.html')
 
         user = User.objects.create_user(email, email, password)
-
         user.save()
+
+        extended_user = EvacUser(
+            user=user,
+            age=int(request.POST['age']),
+            gender=request.POST['gender'],
+            building_occupant=request.POST['building_occupant'] == 'on',
+        )
+        extended_user.save()
+
         login(request, user)
         return redirect('index')
 
