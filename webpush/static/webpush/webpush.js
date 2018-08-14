@@ -207,6 +207,7 @@ function postSubscribeObj(statusType, subscription) {
           isPushEnabled = true;
           messageBox.textContent = 'Successfully subscribed for Push Notification';
           messageBox.style.display = 'block';
+          console.log('User now subscribed');
         }
 
         // Check if the information is deleted from server
