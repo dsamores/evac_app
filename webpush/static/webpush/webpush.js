@@ -9,32 +9,71 @@ window.addEventListener('load', function() {
   subBtn = document.getElementById('webpush-subscribe-button');
   messageBox = document.getElementById('webpush-message');
 
-  subBtn.addEventListener('click',
-    function() {
-      subBtn.disabled = true;
-      if (isPushEnabled) {
-        return unsubscribe()
-      }
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      console.log('Service Worker and Push is supported');
 
-      // Do everything if the Browser Supports Service Worker
-      if ('serviceWorker' in navigator) { 
         var serviceWorker = document.querySelector('meta[name="service-worker-js"]').content;
         navigator.serviceWorker.register(serviceWorker)
           .then(
             function(reg) {
               subBtn.textContent = 'Loading....';
               registration = reg;
-              initialiseState(reg);
+                initializeUI();
+
             }
-          );
-      }
-      // If service worker not supported, show warning to the message box
-      else {  
-        messageBox.textContent = 'Service Worker is not supported in your Browser!';
-        messageBox.style.display = 'block'; 
-      }
+          )
+      .catch(function(error) {
+      messageBox.textContent = 'Service Worker Error' + error ;
+      });
+    } else {
+      messageBox.textContent = 'Push messaging is not supported';
+      subBtn.textContent = 'Push Not Supported';
     }
-  );
+
+
+    function initializeUI() {
+
+      subBtn.addEventListener('click', function() {
+            subBtn.disabled = true;
+            if (isSubscribed) {
+              unsubscribe();
+            } else {
+              //subscribeUser();
+              initialiseState(registration);
+            }
+          });
+
+      // Set the initial subscription value
+      registration.pushManager.getSubscription()
+      .then(function(subscription) {
+        isSubscribed = !(subscription === null);
+
+        if (isSubscribed) {
+          console.log('User IS subscribed.');
+        } else {
+          console.log('User is NOT subscribed.');
+        }
+
+        updateBtn();
+        invisibleSubscription();
+      });
+    }
+
+    function updateBtn() {
+      if (Notification.permission === 'denied') {
+        subBtn.textContent = 'Push Messaging Blocked.';
+        subBtn.disabled = true;
+        return;
+      }
+
+      if (isSubscribed) {
+        subBtn.textContent = 'Disable Push Messaging';
+      } else {
+        subBtn.textContent = 'Enable Push Messaging';
+      }
+
+      subBtn.disabled = false;
+    }
 
   // Once the service worker is registered set the initial state  
   function initialiseState(reg) {
@@ -42,35 +81,26 @@ window.addEventListener('load', function() {
     if (!(reg.showNotification)) {
         // Show a message and activate the button
         messageBox.textContent = 'Showing Notification is not suppoted in your browser';
-        subBtn.textContent = 'Subscribe to Push Messaging';
+        subBtn.textContent = 'Enable Push Messaging';
         messageBox.style.display = 'block';
         return;
     }
 
-    // Check the current Notification permission.  
-    // If its denied, it's a permanent block until the  
-    // user changes the permission  
-    if (Notification.permission === 'denied') {
-      // Show a message and activate the button
-      messageBox.textContent = 'The Push Notification is blocked from your browser.';
-      subBtn.textContent = 'Subscribe to Push Messaging';
-      subBtn.disabled = false;
-      messageBox.style.display = 'block';
-      return;  
-    }
-
-    // Check if push messaging is supported  
-    if (!('PushManager' in window)) {
-      // Show a message and activate the button 
-      messageBox.textContent = 'Push Notification is not available in the browser';
-      subBtn.textContent = 'Subscribe to Push Messaging';
-      subBtn.disabled = false;
-      messageBox.style.display = 'block';
-      return;  
-    }
-
     // We need to subscribe for push notification and send the information to server  
-    subscribe(reg)
+    subscribe(reg);
+  }
+
+  function invisibleSubscription(){
+    subBtn.style.display = 'none';
+    if(subBtn.textContent == 'Enable Push Messaging'){
+        subBtn.click();
+    }
+    else if(subBtn.textContent == 'Disable Push Messaging'){
+        console.log('User already registered');
+    }
+    else{
+        console.log('Couldn\'t subscribe user:', subBtn.textContent);
+    }
   }
 }
 );
@@ -172,7 +202,7 @@ function postSubscribeObj(statusType, subscription) {
         // Check the information is saved successfully into server
         if ((response.status == 201) && (statusType == 'subscribe')) {
           // Show unsubscribe button instead
-          subBtn.textContent = 'Unsubscribe to Push Messaging';
+          subBtn.textContent = 'Disable Push Messaging';
           subBtn.disabled = false;
           isPushEnabled = true;
           messageBox.textContent = 'Successfully subscribed for Push Notification';
@@ -189,7 +219,7 @@ function postSubscribeObj(statusType, subscription) {
                 subscription.unsubscribe()
                 .then(
                   function(successful) {
-                    subBtn.textContent = 'Subscribe to Push Messaging';
+                    subBtn.textContent = 'Enable Push Messaging';
                     messageBox.textContent = 'Successfully unsubscribed for Push Notification';
                     messageBox.style.display = 'block';
                     isPushEnabled = false;
@@ -200,7 +230,7 @@ function postSubscribeObj(statusType, subscription) {
             )
             .catch(
               function(error) {
-                subBtn.textContent = 'Unsubscribe to Push Messaging';
+                subBtn.textContent = 'Disable Push Messaging';
                 messageBox.textContent = 'Error during unsubscribe from Push Notification';
                 messageBox.style.display = 'block';
                 subBtn.disabled = false;
