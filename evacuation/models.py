@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from datetime import timedelta
 from django.utils import timezone
 from webpush.models import Group
-from webpush import send_group_notification
 
 
 class Message(models.Model):
@@ -45,13 +44,6 @@ class Message(models.Model):
 
     def __str__(self):
         return '%d - %s' % (self.id, self.title)
-
-    def save(self, *args, **kwargs):
-
-        payload = {"head": self.title, "body": self.description}
-        send_group_notification(group_name="group1", payload=payload, ttl=1000)
-
-        super(Message, self).save(*args, **kwargs)
 
 
 class Notification(models.Model):

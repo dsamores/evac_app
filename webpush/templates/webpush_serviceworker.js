@@ -14,17 +14,17 @@ self.addEventListener('push', function(event) {
     // Show a notification with title 'ServiceWorker Cookbook' and use the payload
     // as the body.
     self.registration.showNotification(head, {
-      body: body
+      body: body,
+      data: data,
     })
   );
 });
 
 self.addEventListener('notificationclick', function(event) {
-  console.log('[Service Worker] Notification click Received.');
 
   event.notification.close();
 
   event.waitUntil(
-    clients.openWindow('https://developers.google.com/web/')
+    clients.openWindow(event.notification.data.url)
   );
 });

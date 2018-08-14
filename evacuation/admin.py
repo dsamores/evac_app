@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from .models import Message, Notification, Obstacle
+from webpush import send_group_notification
 
 admin.site.register(Obstacle)
 
@@ -28,6 +29,13 @@ class MessageAdmin(admin.ModelAdmin):
         for user in User.objects.all():
             notification = Notification(user=user, message=message)
             notification.save()
+
+        payload = {
+            "head": message.title,
+            "body": message.description,
+            "url": message.action_url
+        }
+        send_group_notification(group_name="group1", payload=payload, ttl=1000)
 
         messages.success(request, 'Message %s sent to all users' % message_id)
         return redirect('admin:evacuation_message_changelist')

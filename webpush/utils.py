@@ -19,7 +19,7 @@ def send_notification_to_user(user, payload, ttl=0):
                                exception=ex))
 
     if errors:
-        raise WebPushException("Push failed.", extra=errors)
+        raise WebPushException("Push failed: %s" % errors)
 
 
 def send_notification_to_group(group_name, payload, ttl=0):
@@ -37,7 +37,7 @@ def send_notification_to_group(group_name, payload, ttl=0):
                                exception=ex))
 
     if errors:
-        raise WebPushException("Push failed.", extra=errors)
+        raise WebPushException("Push failed: %s" % errors)
 
 
 def send_to_subscription(subscription, payload, ttl=0):
