@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{% static 'evacuation/css/flag-icon.min.css' %}">
     <link rel="stylesheet" href="{% static 'evacuation/css/cs-skin-elastic.css' %}">
     <link rel="stylesheet" href="{% static 'evacuation/scss/style.css' %}">
+    <link rel="stylesheet" href="{% static 'evacuation/css/evacuation.css' %}">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
@@ -87,12 +88,37 @@
                         </div>
                         <div class="checkbox">
                             <label>
-                                Building occupant? <input id="building_occupant" name="building_occupant" type="checkbox" checked>
+                                Are you a building occupant? <input id="building_occupant" name="building_occupant" type="checkbox" checked>
                             </label>
+                        </div>
+
+                        <div class="card border border-secondary">
+                            <div class="card-header">
+                                <strong class="card-title">Statements</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="default-tab">
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active" id="nav-consent-tab" data-toggle="tab" href="#nav-consent" role="tab" aria-controls="nav-consent" aria-selected="true">Consent</a>
+                                            <a class="nav-item nav-link" id="nav-pls-tab" data-toggle="tab" href="#nav-pls" role="tab" aria-controls="nav-pls" aria-selected="false">Plain Language</a>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content pl-3 pt-2 register-statement" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-consent" role="tabpanel" aria-labelledby="nav-consent-tab">
+                                            {% include "evacuation/consent.html" %}
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-pls" role="tabpanel" aria-labelledby="nav-pls-tab">
+                                            {% include "evacuation/pls.html" %}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"> Agree the terms and policy
+                                <input type="checkbox" required> I have read and agree with the consent and plain language statement
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Register</button>
