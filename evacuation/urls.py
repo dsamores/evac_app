@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('building-map', views.building_map, name='building_map'),
     path('alerts', views.alerts, name='alerts'),
+    path('statements', views.statements, name='statements'),
 
     # web services
     path('new_user', views.new_user, name='new_user'),

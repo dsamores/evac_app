@@ -104,6 +104,12 @@ def alerts(request):
     return render(request, 'evacuation/alerts.html', context)
 
 
+def statements(request):
+    if not request.user.is_authenticated:
+        return redirect('browser_login')
+    return render(request, 'evacuation/statements.html')
+
+
 def login_user(request, user_id):
     user = User.objects.get(pk=user_id)
     user.backend = 'django.contrib.auth.backends.ModelBackend'
