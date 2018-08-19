@@ -12,6 +12,7 @@ urlpatterns = [
     path('building-map', views.building_map, name='building_map'),
     path('alerts', views.alerts, name='alerts'),
     path('statements', views.statements, name='statements'),
+    path('walkthrough', views.walkthrough, name='walkthrough'),
 
     # web services
     path('new_user', views.new_user, name='new_user'),
