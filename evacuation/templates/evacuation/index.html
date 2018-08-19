@@ -54,7 +54,7 @@
 
 {% block scripts %}
 <script>
-    {% if user.is_authenticated %}
+    {% if not user.is_authenticated %}
     console.log('Something wrong with user id. Please check.');
     {% else %}
     userId = {{ user.id }};
