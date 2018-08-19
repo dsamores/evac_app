@@ -259,6 +259,7 @@ body {
   opacity: 1;
   transform: translateX(0) scale(1);
   transition-delay: 0.4s;
+  z-index: 1000;
 }
 .walkthrough .screens .screen.active ~ .screen {
   opacity: 0;
