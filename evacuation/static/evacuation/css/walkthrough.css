@@ -1,5 +1,5 @@
 body {
-  color: white;
+  color: black;
   font-family: "Lato";
   font-weight: light;
   display: flex;
@@ -29,7 +29,7 @@ body {
 
 .walkthrough {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
-  background: linear-gradient(to right bottom, #9e66c6, #6027e1);
+  background: linear-gradient(to right bottom, #f1f2f7, #a8aab1);
   border-radius: 0;
   display: none;
   flex-direction: column;
@@ -62,7 +62,6 @@ body {
   background: none;
   border: 0;
   margin-top: 40px;
-  color: rgba(255, 255, 255, 0.25);
   cursor: pointer;
   flex: 0 0 auto;
   font-size: 24px;
@@ -120,7 +119,6 @@ body {
   font-size: 13px;
   margin-top: 16px;
   padding-top: 0;
-  color: rgba(255, 255, 255, 0.8);
 }
 .walkthrough .walkthrough-pagination {
   align-items: center;

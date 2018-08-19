@@ -55,7 +55,7 @@ window.addEventListener('load', function() {
         }
 
         updateBtn();
-        invisibleSubscription();
+        //invisibleSubscription();
       });
     }
 
