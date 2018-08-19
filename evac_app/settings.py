@@ -31,9 +31,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '8us#sy#h44*ys4*s8$&m!@dmkx6zf&_f5nq40q23@!z+lr3!p0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['evacassist.com']
 
 
 # Application definition
@@ -152,6 +152,16 @@ WEBPUSH_SETTINGS = {
     "VAPID_PRIVATE_KEY":"pixR8T7qw1a9JY390dNpV73-OP5UzUjXHs1nweQnFoI",
     "VAPID_ADMIN_EMAIL": "davidamores3@gmail.com"
 }
+
+CORS_REPLACE_HTTPS_REFERER = True
+HOST_SCHEME = "https://"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_SECONDS = 1000000
+SECURE_FRAME_DENY = True
 
 try:
     from .local_settings import *

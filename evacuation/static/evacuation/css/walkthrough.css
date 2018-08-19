@@ -8,7 +8,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(150deg, #e6d3f9 0%, #e6d3f9 50%, #cea0f1 50%, #cea0f1 100%);
+  background: linear-gradient(150deg, #f1f2f7 0%, #a8aab1 50%, #64676e 50%, #272c33 100%);
 }
 
 .open-walkthrough {
