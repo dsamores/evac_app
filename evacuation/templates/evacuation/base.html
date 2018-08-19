@@ -5,7 +5,6 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 <head>
     {% load static %}
-    {% load webpush_notifications %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
@@ -25,13 +24,9 @@
     <link rel="stylesheet" href="{% static 'evacuation/scss/style.css' %}">
     <link rel="stylesheet" href="{% static 'evacuation/css/evacuation.css' %}">
 
-    <link rel="stylesheet" href="{% static 'walkthrough/css/font-awesome.css' %}">
-    <link rel="stylesheet" href="{% static 'evacuation/css/walkthrough.css' %}">
-
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
     {% block styles %}{% endblock %}
-    {% webpush_header %}
 
 </head>
 <body>
@@ -65,7 +60,7 @@
                         <a href="/statements"> <i class="menu-icon fa fa-file-text-o"></i>Statements</a>
                     </li>
                     <li>
-                        <a href="#" class="open-walkthrough"> <i class="menu-icon fa fa-file-text-o"></i>Walkthrough</a>
+                        <a href="/walkthrough"> <i class="menu-icon fa fa-file-text-o"></i>Walkthrough</a>
                     </li>
                     <li>
                         <a href="/logout"> <i class="menu-icon fa fa-power-off"></i>Logout</a>
@@ -143,8 +138,6 @@
         </div>
 
     </div>
-
-    {% include "evacuation/walkthrough.html" %}
 
 
     <script src="{% static 'evacuation/js/vendor/jquery-2.1.4.min.js' %}"></script>

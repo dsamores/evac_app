@@ -1,3 +1,15 @@
+body{
+    color: black;
+    font-family: "Lato";
+    font-weight: light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(150deg, #f1f2f7 0%, #a8aab1 50%, #64676e 50%, #272c33 100%);
+}
 .walkthrough {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
   background: linear-gradient(to right bottom, #f1f2f7, #a8aab1);

@@ -94,3 +94,4 @@ class EvacUser(models.Model):
         blank=True, null=True
     )
     building_occupant = models.BooleanField(default=True, blank=True)
+    seen_tutorial = models.BooleanField(default=False, blank=True)

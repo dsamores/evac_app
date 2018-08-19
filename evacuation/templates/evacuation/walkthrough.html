@@ -1,7 +1,31 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    {% load static %}
+    {% load webpush_notifications %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Walkthrough</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% load static %}
-{% load webpush_notifications %}
-<div class='walkthrough'>
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="{% static 'evacuation/css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'walkthrough/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'evacuation/css/walkthrough.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    {% webpush_header %}
+
+</head>
+<body>
+<div class='walkthrough show reveal'>
   <div class='walkthrough-pagination'>
     <a class='dot active'></a>
     <a class='dot'></a>
@@ -72,9 +96,15 @@
   </div>
   <div class='walkthrough-footer'>
     <button class='button next-screen'id="next-screen">Next</button>
-    <button class='button finish close' disabled='true'>Finish</button>
+    <form action="/">
+      <input type="hidden" name="seen_tutorial" value="{{ seen_tutorial }}" />
+      <button type="submit" class='button finish close' disabled='true'>Finish</button>
+    </form>
   </div>
 </div>
 
 <script src="{% static 'evacuation/js/jquery-1.12.0.min.js' %}"></script>
 <script src="{% static 'evacuation/js/walkthrough.js' %}"></script>
+
+</body>
+</html>

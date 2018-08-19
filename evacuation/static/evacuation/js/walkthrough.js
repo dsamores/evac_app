@@ -71,10 +71,6 @@
     $('.prev-screen').click(function() {
       return walkthrough.prevScreen();
     });
-    $('.close').click(function() {
-
-      return walkthrough.closeModal();
-    });
     $('.open-walkthrough').click(function() {
       return walkthrough.openModal();
     });

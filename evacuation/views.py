@@ -16,10 +16,16 @@ from django.contrib import messages
 def index(request):
     if not request.user.is_authenticated:
         return redirect('browser_login')
-    webpush = {'group': 'group1'}
+
+    evac_user = EvacUser.objects.get(user=request.user)
+    if request.method == 'GET':
+        seen_tutorial = request.GET.get('seen_tutorial', None)
+        if seen_tutorial == 'False':
+            evac_user.seen_tutorial = True
+            evac_user.save()
+
     context = {
-        'user_id': request.user.id,
-        'webpush': webpush,
+        'seen_tutorial': evac_user.seen_tutorial
     }
     return render(request, 'evacuation/index.html', context)
 
@@ -113,7 +119,14 @@ def statements(request):
 def walkthrough(request):
     if not request.user.is_authenticated:
         return redirect('browser_login')
-    return render(request, 'evacuation/walkthrough.html')
+
+    evac_user = EvacUser.objects.get(user=request.user)
+    webpush = {'group': 'group1'}
+    context = {
+        'seen_tutorial': evac_user.seen_tutorial,
+        'webpush': webpush,
+    }
+    return render(request, 'evacuation/walkthrough.html', context)
 
 
 def login_user(request, user_id):
