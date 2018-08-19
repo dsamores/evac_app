@@ -1,6 +1,18 @@
 version: "2"
 
 services:
+
+  nginx:
+    image: nginx:latest
+    container_name: nz01
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+      - ./config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - web
+
   db:
     image: postgres
     hostname: db
@@ -26,6 +38,8 @@ services:
     depends_on:
       - db
     entrypoint: /entrypoint.sh
-    command: bash -c "python3 manage.py runserver 0.0.0.0:8000"
-    ports:
-      - 8000:8000
+    expose:
+      - "8000"
+    #command: bash -c "python3 manage.py runserver 0.0.0.0:8000"
+    #ports:
+    #  - 8000:8000

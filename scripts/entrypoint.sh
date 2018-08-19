@@ -16,6 +16,8 @@ python3 manage.py migrate
 echo "Run collectstatic"
 python3 manage.py collectstatic --noinput --verbosity=0
 
+gunicorn evac_app.wsgi -b 0.0.0.0:8000
+
 # Run command
 echo "Running: $@"
 exec "$@"
