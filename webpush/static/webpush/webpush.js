@@ -36,7 +36,7 @@ window.addEventListener('load', function() {
       subBtn.addEventListener('click', function() {
             subBtn.disabled = true;
             if (isSubscribed) {
-              unsubscribe();
+              //unsubscribe();
             } else {
               //subscribeUser();
               initialiseState(registration);
@@ -67,12 +67,13 @@ window.addEventListener('load', function() {
       }
 
       if (isSubscribed) {
-        subBtn.textContent = 'Disable Push Messaging';
+        subBtn.textContent = 'Already subscribed. Thanks!';
+        subBtn.disabled = true;
       } else {
         subBtn.textContent = 'Enable Push Messaging';
+        subBtn.disabled = false;
       }
 
-      subBtn.disabled = false;
     }
 
   // Once the service worker is registered set the initial state  
@@ -81,8 +82,8 @@ window.addEventListener('load', function() {
     if (!(reg.showNotification)) {
         // Show a message and activate the button
         messageBox.textContent = 'Showing Notification is not suppoted in your browser';
-        subBtn.textContent = 'Enable Push Messaging';
-        messageBox.style.display = 'block';
+        updateBtn();
+        //messageBox.style.display = 'block';
         return;
     }
 
@@ -95,16 +96,13 @@ window.addEventListener('load', function() {
     if(subBtn.textContent == 'Enable Push Messaging'){
         subBtn.click();
     }
-    else if(subBtn.textContent == 'Disable Push Messaging'){
+    else if(subBtn.textContent == 'Already subscribed. Thanks!'){
         console.log('User already registered');
     }
     else{
         console.log('Couldn\'t subscribe user:', subBtn.textContent);
     }
   }
-}
-);
-
 
 function subscribe(reg) {
   // Get the Subscription or register one
@@ -115,10 +113,16 @@ function subscribe(reg) {
     )
     .catch(
       function(error) {
-        console.log('Subscription error.', error)
+        console.log('Subscription error.', error);
+        updateBtn();
       }
     )
 }
+
+}
+);
+
+
 
 function urlB64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -170,7 +174,7 @@ function unsubscribe() {
           // to allow the user to subscribe to push
           subBtn.disabled = false;
           messageBox.textContent = 'Subscription is not available';
-          messageBox.style.display = 'block';
+          //messageBox.style.display = 'block';
           return;
         }
         postSubscribeObj('unsubscribe', subscription);
@@ -202,11 +206,11 @@ function postSubscribeObj(statusType, subscription) {
         // Check the information is saved successfully into server
         if ((response.status == 201) && (statusType == 'subscribe')) {
           // Show unsubscribe button instead
-          subBtn.textContent = 'Disable Push Messaging';
-          subBtn.disabled = false;
+          subBtn.textContent = 'Already subscribed. Thanks!';
+          subBtn.disabled = true;
           isPushEnabled = true;
           messageBox.textContent = 'Successfully subscribed for Push Notification';
-          messageBox.style.display = 'block';
+          //messageBox.style.display = 'block';
           console.log('User now subscribed');
         }
 
@@ -222,7 +226,7 @@ function postSubscribeObj(statusType, subscription) {
                   function(successful) {
                     subBtn.textContent = 'Enable Push Messaging';
                     messageBox.textContent = 'Successfully unsubscribed for Push Notification';
-                    messageBox.style.display = 'block';
+                    //messageBox.style.display = 'block';
                     isPushEnabled = false;
                     subBtn.disabled = false;
                   }
@@ -231,10 +235,10 @@ function postSubscribeObj(statusType, subscription) {
             )
             .catch(
               function(error) {
-                subBtn.textContent = 'Disable Push Messaging';
+                subBtn.textContent = 'Already subscribed. Thanks!';
                 messageBox.textContent = 'Error during unsubscribe from Push Notification';
-                messageBox.style.display = 'block';
-                subBtn.disabled = false;
+                //messageBox.style.display = 'block';
+                subBtn.disabled = true;
               }
             );
         }
