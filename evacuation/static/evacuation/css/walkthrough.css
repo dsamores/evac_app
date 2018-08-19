@@ -1,32 +1,3 @@
-body {
-  color: black;
-  font-family: "Lato";
-  font-weight: light;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: linear-gradient(150deg, #f1f2f7 0%, #a8aab1 50%, #64676e 50%, #272c33 100%);
-}
-
-.open-walkthrough {
-  border: 0;
-  background: #5da3f2;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 12px;
-  height: 40px;
-  width: 120px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -20px;
-  margin-left: -60px;
-}
-
 .walkthrough {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
   background: linear-gradient(to right bottom, #f1f2f7, #a8aab1);
@@ -35,11 +6,14 @@ body {
   flex-direction: column;
   flex: 0 0 auto;
   font-size: 14px;
-  height: 464px;
+  height: 100vh;
   overflow: hidden;
   transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  width: 280px;
+  width: 100vw;
   z-index: 1000;
+  top: 0;
+position: absolute;
+left: 0;
 }
 .walkthrough.show {
   display: flex;
@@ -360,4 +334,7 @@ display: inline-block;
 #webpush-subscribe-button:disabled {
   cursor: default;
   opacity: 0.5;
+}
+.tutorial-image{
+    width: 85%;
 }
