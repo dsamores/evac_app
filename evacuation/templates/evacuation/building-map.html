@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="{% static 'evacuation/bower_components/mapwize.js/dist/mapwize.css' %}" />
 <style>
 #indoor-map {
-       height: 550px;
+       height: 82vh;
 }
 #map {
        position:absolute; top:0; bottom:0; width:100%; height: 100%;
@@ -17,8 +17,14 @@
 </style>
 {% endblock %}
 
+{% block instruction_message %}
+Click somewhere in the map to see an exit route
+{% endblock %}
+
 {% block content %}
 <div id="indoor-map"></div>
+
+<div class="level-overlay">Choose<br>level</div>
 
 <div class="modal modal-backdrop fade show" id="staticModal">
     <div class="modal-dialog modal-sm" role="document">

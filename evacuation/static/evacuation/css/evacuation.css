@@ -141,3 +141,12 @@
     content: "Loading...";
   }
 }
+.level-overlay{
+    position: absolute;
+    right: 16px;
+    bottom: 38vh;
+    z-index: 1000;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
