@@ -33,7 +33,7 @@ SECRET_KEY = '8us#sy#h44*ys4*s8$&m!@dmkx6zf&_f5nq40q23@!z+lr3!p0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.evacassist.com']
+ALLOWED_HOSTS = ['web', '.evacassist.com']
 
 
 # Application definition
