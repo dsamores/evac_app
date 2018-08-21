@@ -151,9 +151,12 @@ $(document).ready(function($) {
     });
 
     map.on('click', function (e) {
-        map.stopDirections();
-        var location = new Location(e.latlng.lat, e.latlng.lng);
-        location.getRoutesAndDisplay();
+        if(insideBuilding([e.latlng.lat, e.latlng.lng])){
+            map.stopDirections();
+            var location = new Location(e.latlng.lat, e.latlng.lng);
+            console.log(e.latlng.lat, e.latlng.lng);
+            location.getRoutesAndDisplay();
+        }
     });
 
     map.on('floorChange', function (e) {
@@ -175,3 +178,27 @@ $(document).ready(function($) {
         }
     });
 });
+
+function insideBuilding(point) {
+
+    var vs = [
+        [-37.80352392493654, 144.95930492877963],
+        [-37.80338723255397, 144.95977833867073],
+        [-37.804143805821965, 144.9601082503796],
+        [-37.80407148665343, 144.95954632759097]
+    ];
+
+    var x = point[0], y = point[1];
+
+    var inside = false;
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i][0], yi = vs[i][1];
+        var xj = vs[j][0], yj = vs[j][1];
+
+        var intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+
+    return inside;
+};
