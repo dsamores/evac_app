@@ -86,7 +86,7 @@ class EvacUser(models.Model):
     GENDERS = (
         ('Male', 'Male'),
         ('Female', 'Female'),
-        ('None', 'Prefer to not say'),
+        ('Other', 'Other'),
     )
     gender = models.CharField(
         max_length=15,
@@ -94,4 +94,20 @@ class EvacUser(models.Model):
         blank=True, null=True
     )
     building_occupant = models.BooleanField(default=True, blank=True)
+    FLOORS = (
+        (0, 'Ground floor'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+    )
+    floor = models.IntegerField(
+        choices=FLOORS,
+        blank=True, null=True
+    )
+    mobility_restriction = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    phone_use = models.CharField(max_length=31, blank=True, null=True)
     seen_tutorial = models.BooleanField(default=False, blank=True)

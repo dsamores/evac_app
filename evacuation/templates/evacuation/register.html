@@ -83,14 +83,93 @@
                               <option value="">--</option>
                               <option value="Male">Male</option>
                               <option value="Female">Female</option>
-                              <option value="None">Prefer to not say</option>
+                              <option value="Other">Other</option>
                             </select>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                Are you a building occupant? <input id="building_occupant" name="building_occupant" type="checkbox" checked>
-                            </label>
+                        <div class="form-group">
+                            <label>Do you work in this building?</label>
+                            <select id="building_occupant" name="building_occupant" class="form-control" required>
+                              <option value="">--</option>
+                              <option value="1">Yes</option>
+                              <option value="0">No</option>
+                            </select>
                         </div>
+                        <div class="form-group">
+                            <label>In what level is your office located?</label>
+                            <select id="floor" name="floor" class="form-control" required>
+                              <option value="">--</option>
+                              <option value="0">Ground floor</option>
+                              <option value="1">Level 1</option>
+                              <option value="2">Level 2</option>
+                              <option value="3">Level 3</option>
+                            </select>
+                        </div>
+                          <div class="form-group">
+                            <label class=" form-control-label">Do you have a mobility restriction?</label>
+                              <div class="form-check">
+                                <div class="radio">
+                                  <label for="mobility_no" class="form-check-label ">
+                                    <input type="radio" id="mobility_no" name="mobility" value="0" class="form-check-input">No
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label for="mobility_yes" class="form-check-label ">
+                                    <input type="radio" id="mobility_yes" name="mobility" value="1" class="form-check-input">Yes
+                                  </label>
+                                    <input id="mobility_explain" name="mobility_restriction" type="text" class="form-control" placeholder="If yes, please explain">
+                                </div>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                            <label class=" form-control-label">What do you use your smartphone for?</label>
+                              <div class="form-check">
+                                <div class="checkbox">
+                                  <label for="use_calls">
+                                      <input type="checkbox" id="use_calls" name="phone_use[]" value="1" class="form-check-input" />Calls
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_messaging">
+                                      <input type="checkbox" id="use_messaging" name="phone_use[]" value="2" class="form-check-input" />Messaging
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_social">
+                                      <input type="checkbox" id="use_social" name="phone_use[]" value="3" class="form-check-input" />Social networks
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_games">
+                                      <input type="checkbox" id="use_games" name="phone_use[]" value="4" class="form-check-input" />Games
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_video">
+                                      <input type="checkbox" id="use_video" name="phone_use[]" value="5" class="form-check-input" />Video streaming
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_business">
+                                      <input type="checkbox" id="use_business" name="phone_use[]" value="6" class="form-check-input" />Business applications
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_browsing">
+                                      <input type="checkbox" id="use_browsing" name="phone_use[]" value="7" class="form-check-input" />Browsing internet
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_reading">
+                                      <input type="checkbox" id="use_reading" name="phone_use[]" value="8" class="form-check-input" />Reading
+                                  </label>
+                                </div>
+                                <div class="checkbox">
+                                  <label for="use_other">
+                                      <input type="checkbox" id="use_other" name="phone_use[]" value="9" class="form-check-input" />Other
+                                  </label>
+                                </div>
+                              </div>
+                          </div>
 
                         <div class="card border border-secondary">
                             <div class="card-header">
