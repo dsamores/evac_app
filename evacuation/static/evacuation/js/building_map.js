@@ -1,5 +1,6 @@
 
 var map;
+var currentFloor = 1;
 
 var obstacleIcon = L.icon({
     iconUrl: images_url + 'delete2.png',
@@ -7,10 +8,14 @@ var obstacleIcon = L.icon({
 });
 
 var exitIds = {
-    exit1: '5b68fc6e7c31b70004d8b26a',
-    exit2: '5b692739dac0a20004f2ebdd',
-    exit3: '5b692754f3f9dd0004e190d0',
-    exit4: '5b692775f3f9dd0004e190d2',
+//    exit1: '5b68fc6e7c31b70004d8b26a',
+//    exit2: '5b692739dac0a20004f2ebdd',
+//    exit3: '5b692754f3f9dd0004e190d0',
+//    exit4: '5b692775f3f9dd0004e190d2',
+    exit5: '5b7bb1b79721cb0013906134',
+    exit6: '5b7bb1dba6bdda00137ca780',
+    exit7: '5b7bb24470759d00134db139',
+
 }
 
 function Place(mwPlace){
@@ -27,12 +32,14 @@ function Place(mwPlace){
         startLoading();
         var self = this;
         var blocked = false;
+        var numRoutes = 3;
         for(exitId in exitIds){
             blocked = false;
             for(i in obstacles){
                 var obstacle = obstacles[i].fields;
                 if(obstacle.place_id == exitIds[exitId]){
                     blocked = true;
+                    numRoutes--;
                     break;
                 }
             }
@@ -41,10 +48,11 @@ function Place(mwPlace){
             Mapwize.Api.getDirections({placeId: this.mwPlace._id}, {placeId: exitIds[exitId]}, null, null, function(err, directions){
                 if (err) {
                     console.error('An error occur during direction fetching', err);
+                    stopLoading();
                 }
                 else {
                     self.exitRoutes.push(directions);
-                    if(self.exitRoutes.length >= 4){
+                    if(self.exitRoutes.length >= numRoutes){
                         self.sortRoutes();
                         map.startDirections(self.exitRoutes[0]);
                     }
@@ -58,7 +66,7 @@ function Place(mwPlace){
 function Location(lat, lng){
     this.lat = lat;
     this.lng = lng;
-    this.floor = 1;
+    this.floor = currentFloor;
     this.exitRoutes = new Array();
 
     this.sortRoutes = function(){
@@ -71,7 +79,7 @@ function Location(lat, lng){
         startLoading();
         var self = this;
         var blocked = false;
-        var numRoutes = 4;
+        var numRoutes = 3;
         for(exitId in exitIds){
             blocked = false;
             for(i in obstacles){
@@ -87,6 +95,7 @@ function Location(lat, lng){
             Mapwize.Api.getDirections({latitude: self.lat, longitude: self.lng, floor: self.floor}, {placeId: exitIds[exitId]}, null, null, function(err, directions){
                 if (err) {
                     console.error('An error occur during direction fetching', err);
+                    stopLoading();
                 }
                 else {
                     self.exitRoutes.push(directions);
@@ -115,7 +124,7 @@ $(document).ready(function($) {
         apiKey: 'e32cf47a2a7a0df9e93d13fa4535b940',
         center: [-37.803704, 144.959694],
         zoom: 19,
-        floor: 1,
+        floor: currentFloor,
     }, function (err, mapInstance) {
         if (err) {
             console.error('An error occur during map initialization', err);
@@ -145,5 +154,24 @@ $(document).ready(function($) {
         map.stopDirections();
         var location = new Location(e.latlng.lat, e.latlng.lng);
         location.getRoutesAndDisplay();
+    });
+
+    map.on('floorChange', function (e) {
+        currentFloor = e.floor;
+        if(currentFloor == 0){
+            exitIds = {
+                exit1: '5b68fc6e7c31b70004d8b26a',
+                exit2: '5b692739dac0a20004f2ebdd',
+                exit3: '5b692754f3f9dd0004e190d0',
+                exit4: '5b692775f3f9dd0004e190d2',
+            }
+        }
+        else{
+            exitIds = {
+                exit5: '5b7bb1b79721cb0013906134',
+                exit6: '5b7bb1dba6bdda00137ca780',
+                exit7: '5b7bb24470759d00134db139',
+            }
+        }
     });
 });
