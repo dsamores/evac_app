@@ -48,6 +48,7 @@ Click somewhere in the map to see an exit route
     var images_url = "{% static 'evacuation/images/' %}";
     var obstacles = {{ obstacles|safe }};
 </script>
+<script src="{% static 'evacuation/js/route_cache.js' %}"></script>
 <script src="{% static 'evacuation/js/building_map.js' %}"></script>
 {% endblock %}
 

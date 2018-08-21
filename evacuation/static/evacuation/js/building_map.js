@@ -2,21 +2,28 @@
 var map;
 var currentFloor = 1;
 
+var zoom;
+var minZoom, maxZoom;
+var maxBounds;
+
 var obstacleIcon = L.icon({
     iconUrl: images_url + 'delete2.png',
     iconSize: [30, 30]
 });
 
 var exitIds = {
-//    exit1: '5b68fc6e7c31b70004d8b26a',
-//    exit2: '5b692739dac0a20004f2ebdd',
-//    exit3: '5b692754f3f9dd0004e190d0',
-//    exit4: '5b692775f3f9dd0004e190d2',
-    exit5: '5b7bb1b79721cb0013906134',
-    exit6: '5b7bb1dba6bdda00137ca780',
-    exit7: '5b7bb24470759d00134db139',
+//    'exit1': '5b68fc6e7c31b70004d8b26a',
+//    'exit2': '5b692739dac0a20004f2ebdd',
+//    'exit3': '5b692754f3f9dd0004e190d0',
+//    'exit4': '5b692775f3f9dd0004e190d2',
+    'exit5': '5b7bb1b79721cb0013906134',
+    'exit6': '5b7bb1dba6bdda00137ca780',
+    'exit7': '5b7bb24470759d00134db139',
 
 }
+
+var assemblyAreaId = '5b68f6dd85cc1800048455cd';
+
 
 function Place(mwPlace){
     this.mwPlace = mwPlace;
@@ -71,7 +78,7 @@ function Location(lat, lng){
 
     this.sortRoutes = function(){
         this.exitRoutes.sort(function(er1, er2){
-            return er1.distance - er2.distance;
+            return er1[1].distance - er2[1].distance;
         });
     }
 
@@ -79,7 +86,7 @@ function Location(lat, lng){
         startLoading();
         var self = this;
         var blocked = false;
-        var numRoutes = 3;
+        var numRoutes = Object.keys(exitIds).length;
         for(exitId in exitIds){
             blocked = false;
             for(i in obstacles){
@@ -98,11 +105,25 @@ function Location(lat, lng){
                     stopLoading();
                 }
                 else {
-                    self.exitRoutes.push(directions);
+                    var eId = reverseRouteLookup(directions.to.placeId);
+                    self.exitRoutes.push([eId, directions]);
                     if(self.exitRoutes.length >= numRoutes){
                         self.sortRoutes();
-                        map.startDirections(self.exitRoutes[0]);
-                        stopLoading();
+
+                        Mapwize.Api.getDirections({latitude: self.lat, longitude: self.lng, floor: self.floor}, {placeId: assemblyAreaId}, [{placeId: exitIds[self.exitRoutes[0][0]]}], null, function(err1, directions1){
+                            if (err1) {
+                                console.error('An error occur during direction fetching', err);
+                                stopLoading();
+                            }
+                            else {
+                                map.startDirections(directions1);
+                                map.setMinZoom(minZoom);
+                                map.setMaxZoom(maxZoom);
+                                map.setMaxBounds(null);
+                                stopLoading();
+
+                            }
+                        });
                     }
                 }
             });
@@ -142,19 +163,26 @@ $(document).ready(function($) {
     }
 
     map.on('placeClick', function (e) {
-        console.log(e.place);
-        if(e.place.placeType.name != 'ISO7010-E001' && e.place.placeType.name != 'ISO7010-E002'){
-            map.stopDirections();
-            var place = new Place(e.place);
-            place.getRoutesAndDisplay();
-        }
+//        console.log(e.place);
+//        if(e.place.placeType.name != 'ISO7010-E001' && e.place.placeType.name != 'ISO7010-E002'){
+//            map.stopDirections();
+//            var place = new Place(e.place);
+//            place.getRoutesAndDisplay();
+//        }
     });
 
     map.on('click', function (e) {
+        console.log('qwerty');
         if(insideBuilding([e.latlng.lat, e.latlng.lng])){
+            zoom = map.getZoom();
+            minZoom = map.getMinZoom();
+            maxZoom = map.getMaxZoom();
+            map.setMinZoom(zoom);
+            map.setMaxZoom(zoom);
+            map.setMaxBounds(map.getBounds());
+
             map.stopDirections();
             var location = new Location(e.latlng.lat, e.latlng.lng);
-            console.log(e.latlng.lat, e.latlng.lng);
             location.getRoutesAndDisplay();
         }
     });
@@ -163,20 +191,35 @@ $(document).ready(function($) {
         currentFloor = e.floor;
         if(currentFloor == 0){
             exitIds = {
-                exit1: '5b68fc6e7c31b70004d8b26a',
-                exit2: '5b692739dac0a20004f2ebdd',
-                exit3: '5b692754f3f9dd0004e190d0',
-                exit4: '5b692775f3f9dd0004e190d2',
+                'exit1': '5b68fc6e7c31b70004d8b26a',
+                'exit2': '5b692739dac0a20004f2ebdd',
+                'exit3': '5b692754f3f9dd0004e190d0',
+                'exit4': '5b692775f3f9dd0004e190d2',
             }
         }
-        else{
+        else if(currentFloor == 1){
             exitIds = {
-                exit5: '5b7bb1b79721cb0013906134',
-                exit6: '5b7bb1dba6bdda00137ca780',
-                exit7: '5b7bb24470759d00134db139',
+                'exit5': '5b7bb1b79721cb0013906134',
+                'exit6': '5b7bb1dba6bdda00137ca780',
+                'exit7': '5b7bb24470759d00134db139',
+            }
+        }
+        else if(currentFloor == 2){
+            exitIds = {
+                'exit8': '5b7c0245d224a900214bf8ac',
+                'exit9': '5b7c026b447f35002bb5a13f',
+                'exit10': '5b7c0290a7d5e8002b641c29',
+            }
+        }
+        else if(currentFloor == 3){
+            exitIds = {
+                'exit11': '5b7c02b2d224a900214bf8b3',
+                'exit12': '5b7c02d4a7d5e8002b641c4f',
+                'exit13': '5b7c02f243d06c002ba60673',
             }
         }
     });
+
 });
 
 function insideBuilding(point) {
@@ -202,3 +245,11 @@ function insideBuilding(point) {
 
     return inside;
 };
+
+function reverseRouteLookup(exitId){
+    for(var i in exitIds){
+        if(exitId == exitIds[i])
+            return i;
+    }
+    return null;
+}
