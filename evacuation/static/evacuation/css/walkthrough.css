@@ -1,6 +1,5 @@
 body{
     color: black;
-    font-family: "Lato";
     font-weight: light;
     display: flex;
     justify-content: center;
@@ -24,8 +23,8 @@ body{
   width: 100vw;
   z-index: 1000;
   top: 0;
-position: absolute;
-left: 0;
+  position: absolute;
+  margin: 0 auto;
 }
 .walkthrough.show {
   display: flex;
