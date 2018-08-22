@@ -35,7 +35,7 @@ class MessageAdmin(admin.ModelAdmin):
             "body": message.description,
             "url": message.action_url
         }
-        send_group_notification(group_name="group1", payload=payload, ttl=1000)
+        send_group_notification(group_name=str(message.group), payload=payload, ttl=1000)
 
         messages.success(request, 'Message %s sent to all users' % message_id)
         return redirect('admin:evacuation_message_changelist')
