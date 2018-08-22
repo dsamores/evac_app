@@ -349,3 +349,7 @@ display: inline-block;
 .tutorial-image{
     width: 85%;
 }
+.tutorial-image2{
+    width: 40%;
+    margin-bottom: 10px;
+}
