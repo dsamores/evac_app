@@ -121,3 +121,10 @@ class EvacUser(models.Model):
         choices=PHONE_MAKES,
         blank=True, null=True
     )
+
+
+class Landmark(models.Model):
+    name = models.CharField(max_length=63)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    image = models.CharField(max_length=63, blank=True, null=True)

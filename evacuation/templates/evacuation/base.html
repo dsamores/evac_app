@@ -6,6 +6,7 @@
 <head>
     {% load static %}
     {% load evacuation_extras %}
+    {% load survey_extras %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
@@ -66,9 +67,12 @@
                             </li>
                         </ul>
                     </li>
+                    {% is_survey_active "Post evacuation" as survey_active %}
+                    {% if survey_active %}
                     <li>
                         <a href="/survey"> <i class="menu-icon fa fa-check-square-o"></i>Survey</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="/logout"> <i class="menu-icon fa fa-power-off"></i>Logout</a>
                     </li>
