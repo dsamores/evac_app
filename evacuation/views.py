@@ -69,6 +69,7 @@ def register(request):
             building_occupant=int(request.POST['building_occupant']),
             floor=int(request.POST['floor']),
             mobility_restriction='{}{}'.format('Yes: ' if int(request.POST['mobility']) else 'No', request.POST['mobility_restriction']),
+            phone_make=request.POST['phone_make'],
             phone_use=','.join(request.POST.getlist('phone_use[]'))
         )
         extended_user.save()

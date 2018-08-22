@@ -111,3 +111,13 @@ class EvacUser(models.Model):
     )
     phone_use = models.CharField(max_length=31, blank=True, null=True)
     seen_tutorial = models.BooleanField(default=False, blank=True)
+    PHONE_MAKES = (
+        ('Iphone', 'Iphone'),
+        ('Android', 'Android'),
+        ('Other', 'Other'),
+    )
+    phone_make = models.CharField(
+        max_length=15,
+        choices=PHONE_MAKES,
+        blank=True, null=True
+    )
