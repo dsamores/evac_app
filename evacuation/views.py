@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from .models import Notification, Interaction, Obstacle, EvacUser
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import login, logout, authenticate
@@ -11,6 +11,7 @@ import json
 import datetime
 from django.core import serializers
 from django.contrib import messages
+import random
 
 
 def index(request):
@@ -24,10 +25,13 @@ def index(request):
             evac_user.seen_tutorial = True
             evac_user.save()
 
-    context = {
-        'seen_tutorial': evac_user.seen_tutorial
-    }
-    return render(request, 'evacuation/index.html', context)
+    if not evac_user.seen_tutorial:
+        return redirect('walkthrough')
+
+    if request.user.groups.filter(name='group_features_map').exists():
+        return redirect('building_map')
+    else:
+        return redirect('alerts')
 
 
 def browser_login(request):
@@ -60,6 +64,24 @@ def register(request):
             return render(request, 'evacuation/register.html')
 
         user = User.objects.create_user(email, email, password)
+
+        # assign user to one of three 'features' groups
+        if request.POST['phone_make'] == 'Iphone':
+            # if iphone, immediately assign to map group
+            user.groups.add(Group.objects.get(name='group_features_map'))
+        else:
+            # if any other, assign with prob 70% to full features and 30% to alerts only
+            if random.randrange(10) < 7:
+                user.groups.add(Group.objects.get(name='group_features_all'))
+            else:
+                user.groups.add(Group.objects.get(name='group_features_alerts'))
+
+        # assign user to one of two 'landmarks' groups 50-50
+        if random.randrange(10) < 5:
+            user.groups.add(Group.objects.get(name='group_landmarks_yes'))
+        else:
+            user.groups.add(Group.objects.get(name='group_landmarks_no'))
+
         user.save()
 
         extended_user = EvacUser(
@@ -125,7 +147,14 @@ def walkthrough(request):
         return redirect('browser_login')
 
     evac_user = EvacUser.objects.get(user=request.user)
-    webpush = {'group': 'group1'}
+    webpush_group = 'do-not-send'
+    if request.user.groups.filter(name__in=('group_features_alerts', 'group_features_all')).exists():
+        if request.user.groups.filter(name='group_landmarks_no').exists():
+            webpush_group = 'send-no-landmarks'
+        else:
+            webpush_group = 'send-yes-landmarks'
+
+    webpush = {'group': webpush_group}
     context = {
         'seen_tutorial': evac_user.seen_tutorial,
         'webpush': webpush,
