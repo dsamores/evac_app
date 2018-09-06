@@ -125,6 +125,12 @@ class EvacUser(models.Model):
 
 class Landmark(models.Model):
     name = models.CharField(max_length=63)
+    display_name = models.CharField(max_length=63, blank=True, null=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    image = models.CharField(max_length=63, blank=True, null=True)
+    floor = models.PositiveIntegerField()
+    icon = models.CharField(max_length=63, blank=True, null=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name

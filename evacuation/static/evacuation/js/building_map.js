@@ -1,5 +1,6 @@
 
 var map;
+var landmarkGroup;
 var currentFloor = 1;
 
 var zoom;
@@ -156,6 +157,7 @@ $(document).ready(function($) {
         }
         stopLoading();
     });
+    landmarkGroup = L.layerGroup().addTo(map);
 
     for(i in obstacles){
         var obstacle = obstacles[i].fields;
@@ -172,7 +174,7 @@ $(document).ready(function($) {
     });
 
     map.on('click', function (e) {
-        console.log('qwerty');
+        console.log('lat:', e.latlng.lat, 'lon:', e.latlng.lng);
         if(insideBuilding([e.latlng.lat, e.latlng.lng])){
             zoom = map.getZoom();
             minZoom = map.getMinZoom();
@@ -218,9 +220,25 @@ $(document).ready(function($) {
                 'exit13': '5b7c02f243d06c002ba60673',
             }
         }
+
+        loadLandmarks(currentFloor);
     });
 
 });
+
+function loadLandmarks(currentFloor){
+    landmarkGroup.clearLayers();
+    for(i in landmarks){
+        var landmark = landmarks[i].fields;
+        if(landmark.floor != currentFloor)
+            continue;
+        var landmarkIcon = L.icon({
+            iconUrl: 'static/evacuation/images/icons/' + landmark.icon + '.png',
+            iconSize: [30, 30]
+        });
+        L.marker([landmark.latitude, landmark.longitude], {icon: landmarkIcon, zIndexOffset: 100}).addTo(landmarkGroup);
+    }
+}
 
 function insideBuilding(point) {
 

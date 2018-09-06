@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .models import Notification, Interaction, Obstacle, EvacUser
+from .models import Notification, Interaction, Obstacle, EvacUser, Landmark
 
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import api_view
@@ -115,9 +115,11 @@ def building_map(request):
     if not request.user.is_authenticated:
         return redirect('browser_login')
     obstacles = Obstacle.objects.filter(active=True)
+    landmarks = Landmark.objects.filter(active=True)
 
     context = {
         'obstacles': serializers.serialize('json', obstacles),
+        'landmarks': serializers.serialize('json', landmarks),
     }
     return render(request, 'evacuation/building-map.html', context)
 

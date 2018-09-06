@@ -5,10 +5,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from .models import Message, Notification, Obstacle
+from .models import Message, Notification, Obstacle, Landmark
 from webpush import send_group_notification
 
 admin.site.register(Obstacle)
+admin.site.register(Landmark)
 
 
 @admin.register(Message)
