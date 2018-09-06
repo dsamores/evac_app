@@ -115,7 +115,9 @@ def building_map(request):
     if not request.user.is_authenticated:
         return redirect('browser_login')
     obstacles = Obstacle.objects.filter(active=True)
-    landmarks = Landmark.objects.filter(active=True)
+    landmarks = []
+    if request.user.groups.filter(name='group_landmarks_yes').exists():
+        landmarks = Landmark.objects.filter(active=True)
 
     context = {
         'obstacles': serializers.serialize('json', obstacles),
