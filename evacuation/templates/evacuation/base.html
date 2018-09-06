@@ -67,7 +67,7 @@
                             </li>
                         </ul>
                     </li>
-                    {% is_survey_active "Post evacuation" as survey_active %}
+                    {% is_survey_active request.user as survey_active %}
                     {% if survey_active %}
                     <li>
                         <a href="/survey"> <i class="menu-icon fa fa-check-square-o"></i>Survey</a>

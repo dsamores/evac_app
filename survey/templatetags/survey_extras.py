@@ -5,6 +5,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def is_survey_active(survey_name):
-    survey = Survey.objects.get(name=survey_name)
-    return survey.active
+def is_survey_active(user):
+    groups = user.groups.all()
+    survey = Survey.objects.filter(group_features__in=groups, group_landmarks__in=groups, active=True)
+    return True if survey else False

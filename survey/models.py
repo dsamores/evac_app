@@ -1,10 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 
 class Survey(models.Model):
     name = models.CharField(max_length=63)
     active = models.BooleanField(default=False, blank=True)
+    group_features = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True, related_name='group_features')
+    group_landmarks = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True, related_name='group_landmarks')
 
     def __str__(self):
         return self.name
