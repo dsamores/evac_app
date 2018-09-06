@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Question, Answer
+from .models import Question, Answer, Survey
 from django.contrib import messages
 
 
@@ -10,8 +10,10 @@ def index(request):
             if answers:
                 messages.add_message(request, messages.INFO, "Survey already taken")
                 return render(request, 'survey/survey.html')
-            survey = Question.objects.filter(survey__name='Post evacuation').order_by('order')
-            context = {'survey': survey}
+            groups = request.user.groups.all()
+            survey = Survey.objects.filter(group_features__in=groups, group_landmarks__in=groups, active=True)
+            questions = Question.objects.filter(survey=survey[0]).order_by('order')
+            context = {'survey': questions}
             return render(request, 'survey/survey.html', context)
         return render(request, 'evacuation/login.html')
     else:
@@ -20,6 +22,20 @@ def index(request):
                 question = Question.objects.get(pk=int(question_id[2:]))
                 if question.type == 'SingleChoice':
                     answer_text = answer_text[2:]
+                elif question.type == 'SingleChoiceOther':
+                    answer_text = answer_text[2:]
+                    if answer_text == 'c_other':
+                        other_answer = request.POST['other_{}'.format(question_id[2:])]
+                        answer_text = '{}:{}'.format(answer_text, other_answer)
+                elif question.type == 'MultipleChoice':
+                    answers = request.POST.getlist(question_id)
+                    answer_text = ','.join(map(lambda x: x[2:], answers))
+                elif question.type == 'MultipleChoiceOther':
+                    answers = request.POST.getlist(question_id)
+                    if 'c_other' in answers:
+                        other_answer = request.POST['other_{}'.format(question_id[2:])]
+                        answers[answers.index('c_other')] = 'q_other:{}'.format(other_answer)
+                    answer_text = ','.join(map(lambda x: x[2:], answers))
                 answer = Answer(question=question, user=request.user, text=answer_text)
                 answer.save()
 

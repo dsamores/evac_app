@@ -8,7 +8,7 @@ admin.site.register(Choice)
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('display_name', 'survey')
+    list_display = ('display_name', 'survey', 'order')
     list_filter = ('survey__name',)
 
     def display_name(self, obj):

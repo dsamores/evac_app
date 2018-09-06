@@ -35,6 +35,9 @@ class Question(models.Model):
     TYPE_CHOICES = (
         ('Text', 'Text'),
         ('SingleChoice', 'SingleChoice'),
+        ('SingleChoiceOther', 'SingleChoiceOther'),
+        ('MultipleChoice', 'MultipleChoice'),
+        ('MultipleChoiceOther', 'MultipleChoiceOther'),
     )
     type = models.CharField(
         max_length=31,

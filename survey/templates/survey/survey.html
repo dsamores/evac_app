@@ -61,11 +61,74 @@
                               <div class="form-check">
                                   {% for choice in question.get_choices %}
                                     <div class="radio">
-                                      <label for="c_{{ choice.id }}" class="form-check-label ">
-                                        <input type="radio" id="c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" required>{{ choice.text }}
+                                      <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" required>{{ choice.text }}
                                       </label>
                                     </div>
                                   {% endfor %}
+                              </div>
+                            </div>
+                        </div>
+                    {% elif question.type == 'SingleChoiceOther' %}
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check">
+                                  {% for choice in question.get_choices %}
+                                    <div class="radio">
+                                      <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" required>{{ choice.text }}
+                                      </label>
+                                    </div>
+                                  {% endfor %}
+                                    <div class="radio">
+                                      <label for="q_{{ question.id }}_c_other" class="form-check-label ">
+                                        <input type="radio" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input" required>Other:
+                                          <input type="text" name="other_{{ question.id }}" class="form-control">
+                                      </label>
+                                    </div>
+                              </div>
+                            </div>
+                        </div>
+                    {% elif question.type == 'MultipleChoice' %}
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check">
+                                  {% for choice in question.get_choices %}
+                                    <div class="checkbox">
+                                      <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                        <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
+                                      </label>
+                                    </div>
+                                  {% endfor %}
+                              </div>
+                            </div>
+                        </div>
+                    {% elif question.type == 'MultipleChoiceOther' %}
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check">
+                                  {% for choice in question.get_choices %}
+                                    <div class="checkbox">
+                                      <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                        <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
+                                      </label>
+                                    </div>
+                                  {% endfor %}
+                                    <div class="checkbox">
+                                      <label for="q_{{ question.id }}_c_other" class="form-check-label ">
+                                        <input type="checkbox" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input">Other:
+                                          <input type="text" name="other_{{ question.id }}" class="form-control">
+                                      </label>
+                                    </div>
                               </div>
                             </div>
                         </div>
