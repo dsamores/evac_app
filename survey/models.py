@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 
 
 class Survey(models.Model):
-    name = models.CharField(max_length=63)
+    name = models.CharField(max_length=127)
     active = models.BooleanField(default=False, blank=True)
     group_features = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True, related_name='group_features')
     group_landmarks = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True, related_name='group_landmarks')
@@ -13,7 +13,7 @@ class Survey(models.Model):
 
 
 class ChoiceGroup(models.Model):
-    name = models.CharField(max_length=31)
+    name = models.CharField(max_length=127)
 
     def __str__(self):
         return self.name
@@ -21,7 +21,7 @@ class ChoiceGroup(models.Model):
 
 class Choice(models.Model):
     group = models.ForeignKey(ChoiceGroup, on_delete=models.CASCADE)
-    text = models.CharField(max_length=31)
+    text = models.CharField(max_length=127)
     order = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
