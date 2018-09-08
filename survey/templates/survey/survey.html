@@ -4,6 +4,10 @@
 
 {% block title %}Survey{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'survey/css/survey.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="col-12">
     {% if messages %}
@@ -132,6 +136,43 @@
                               </div>
                             </div>
                         </div>
+                    {% elif question.type == 'Sketch' %}
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                            </div>
+                            <div class="col col-sm-2"><label for="change_floor_{{ question.id }}" class=" form-control-label">Change floor:</label></div>
+                            <div class="col-12 col-sm-3">
+                              <select name="floor_{{ question.id }}" id="change_floor_{{ question.id }}" class="form-control">
+                                <option value="0">Ground level</option>
+                                <option value="1">First level</option>
+                                <option value="2">Second level</option>
+                                <option value="3">Third level</option>
+                              </select>
+                            </div>
+                            <div class="col-12">
+                                <div class="col col-sm-4">
+                                    <button type="button" class="btn btn-outline-success" id="start-drawing">
+                                        <i class="fa fa-pencil"></i>&nbsp; Draw
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" id="stop-drawing" style="display: none;">
+                                        <i class="fa fa-times"></i>&nbsp; Done
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" id="undo-drawing" style="display: none;">
+                                        <i class="fa fa-undo"></i>&nbsp; Undo
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check">
+                                <div id="editor_{{ question.id }}" class="sketchpad">
+                                    <img src="{% static 'survey/images/3.png' %}" class="background-floor-image" />
+                                </div>
+                                <input type="hidden" name="q_{{ question.id }}" id="q_{{ question.id }}" />
+                                <input type="hidden" name="properties_{{ question.id }}" id="properties_{{ question.id }}" />
+                              </div>
+                            </div>
+                        </div>
                     {% endif %}
                 {% endfor %}
                 {% if survey %}
@@ -145,4 +186,69 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'survey/js/jquery-migrate-1.4.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'survey/js/raphael-2.0.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'survey/js/json2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'survey/js/raphael.sketchpad.js' %}"></script>
+<script type="text/javascript">
+
+{% for question in survey %}
+    {% if question.type == 'Sketch' %}
+
+      $("#start-drawing").click(function() {
+            sketchpad.editing(true);
+            $("#start-drawing").hide();
+            $("#stop-drawing").show();
+            $("#undo-drawing").show();
+            $("#editor_{{ question.id }}").find("img").css("opacity", 1.0);
+        });
+
+        $("#stop-drawing").click(function() {
+            sketchpad.editing(false);
+            $("#start-drawing").show();
+            $("#stop-drawing").hide();
+            $("#undo-drawing").hide();
+            $("#editor_{{ question.id }}").find("img").css("opacity", 0.7);
+        });
+
+        $("#undo-drawing").click(function() {
+            sketchpad.undo();
+        });
+
+
+      var sketchpad = Raphael.sketchpad("editor_{{ question.id }}", {
+        width: 405,
+        height: 800,
+        editing: true
+      });
+
+      // When the sketchpad changes, update the input field.
+      sketchpad.change(function() {
+        $("#q_{{ question.id }}").val(sketchpad.json());
+      });
+
+      $("#stop-drawing").click();
+
+      $("#change_floor_{{ question.id }}").change(function() {
+        var floorImages = [
+            "{% static 'survey/images/0.png' %}",
+            "{% static 'survey/images/1.png' %}",
+            "{% static 'survey/images/2.png' %}",
+            "{% static 'survey/images/3.png' %}",
+        ];
+        var floorImage = floorImages[parseInt($("#change_floor_{{ question.id }}").val())]
+        $("#editor_{{ question.id }}").find("img").attr("src", floorImage);
+      });
+
+      $("#change_floor_{{ question.id }}").val({{ floor }}).change();
+
+      $("#properties_{{ question.id }}").val(
+        $("#editor_{{ question.id }}").find("img").width() + "," + $("#editor_{{ question.id }}").find("img").height()
+      );
+
+    {% endif %}
+{% endfor %}
+</script>
 {% endblock %}

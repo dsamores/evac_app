@@ -1,6 +1,11 @@
-from django.shortcuts import render
-from .models import Question, Answer, Survey
+import json
+
 from django.contrib import messages
+from django.shortcuts import render
+
+from evacuation.models import EvacUser
+
+from .models import Question, Answer, Survey
 
 
 def index(request):
@@ -13,7 +18,11 @@ def index(request):
             groups = request.user.groups.all()
             survey = Survey.objects.filter(group_features__in=groups, group_landmarks__in=groups, active=True)
             questions = Question.objects.filter(survey=survey[0]).order_by('order')
-            context = {'survey': questions}
+            evac_user = EvacUser.objects.get(user=request.user)
+            context = {
+                'survey': questions,
+                'floor': evac_user.floor
+            }
             return render(request, 'survey/survey.html', context)
         return render(request, 'evacuation/login.html')
     else:
@@ -36,6 +45,13 @@ def index(request):
                         other_answer = request.POST['other_{}'.format(question_id[2:])]
                         answers[answers.index('c_other')] = 'q_other:{}'.format(other_answer)
                     answer_text = ','.join(map(lambda x: x[2:], answers))
+                elif question.type == 'Sketch':
+                    answer_dict = {
+                        'sketch': answer_text,
+                        'floor': request.POST['floor_{}'.format(question_id[2:])],
+                        'properties': request.POST['properties_{}'.format(question_id[2:])],
+                    }
+                    answer_text = json.dumps(answer_dict)
                 answer = Answer(question=question, user=request.user, text=answer_text)
                 answer.save()
 

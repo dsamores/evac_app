@@ -1,0 +1,18 @@
+.sketchpad svg{
+    overflow: hidden;
+    position: relative;
+    user-select: text;
+    width: 100%;
+    max-width: 405px;
+    z-index: 100;
+    height: auto;
+}
+
+.background-floor-image{
+    position: absolute;
+    top: 0;
+    left: 1.25rem;
+    width: 90%;
+    max-width: 405px;
+    height: auto;
+}

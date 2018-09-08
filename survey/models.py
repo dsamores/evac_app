@@ -38,6 +38,7 @@ class Question(models.Model):
         ('SingleChoiceOther', 'SingleChoiceOther'),
         ('MultipleChoice', 'MultipleChoice'),
         ('MultipleChoiceOther', 'MultipleChoiceOther'),
+        ('Sketch', 'Sketch'),
     )
     type = models.CharField(
         max_length=31,
