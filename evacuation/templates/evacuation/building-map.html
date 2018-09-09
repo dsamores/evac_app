@@ -51,5 +51,18 @@ Click somewhere in the map to see an exit route
 </script>
 <script src="{% static 'evacuation/js/route_cache.js' %}"></script>
 <script src="{% static 'evacuation/js/building_map.js' %}"></script>
+<script>
+    {% if not user.is_authenticated %}
+    console.log('Something wrong with user id. Please check.');
+    {% else %}
+    userId = {{ user.id }};
+    console.log(userId);
+    localStorage.setItem('userId', userId);
+    {% endif %}
+
+    {% if not seen_tutorial %}
+    window.location.href = '/walkthrough';
+    {% endif %}
+</script>
 {% endblock %}
 

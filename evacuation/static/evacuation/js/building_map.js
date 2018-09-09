@@ -186,6 +186,7 @@ $(document).ready(function($) {
             map.stopDirections();
             var location = new Location(e.latlng.lat, e.latlng.lng);
             location.getRoutesAndDisplay();
+            (new Interaction('map-exitroute', 'lat:' + e.latlng.lat + ',lon:' + e.latlng.lng, window.location.href, null)).save();
         }
     });
 
@@ -222,9 +223,31 @@ $(document).ready(function($) {
         }
 
         loadLandmarks(currentFloor);
+        saveMapEvent('map-floorChange');
+    });
+
+    map.on('zoomstart', function(e) {
+        saveMapEvent('map-zoomstart');
+    });
+
+    map.on('zoomend', function(e) {
+        saveMapEvent('map-zoomend');
+    });
+
+    map.on('movestart', function(e) {
+        saveMapEvent('map-movestart');
+    });
+
+    map.on('moveend', function(e) {
+        saveMapEvent('map-moveend');
     });
 
 });
+
+function saveMapEvent(eventName){
+    var eventDescription = "zoom:" + map.getZoom() + ",center:" + map.getCenter();
+    (new Interaction(eventName, eventDescription, window.location.href, null)).save();
+}
 
 function loadLandmarks(currentFloor){
     landmarkGroup.clearLayers();

@@ -46,14 +46,14 @@
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    {% if not request.user|has_group:"group_features_alerts" %}
-                    <li>
-                        <a href="/building-map"> <i class="menu-icon fa fa-street-view"></i>Map</a>
-                    </li>
-                    {% endif %}
                     {% if not request.user|has_group:"group_features_map" %}
                     <li>
                         <a href="/alerts"> <i class="menu-icon fa fa-exclamation-triangle"></i>Alerts</a>
+                    </li>
+                    {% endif %}
+                    {% if not request.user|has_group:"group_features_alerts" %}
+                    <li>
+                        <a href="/building-map"> <i class="menu-icon fa fa-street-view"></i>Map</a>
                     </li>
                     {% endif %}
                     <li class="menu-item-has-children dropdown">
@@ -97,7 +97,7 @@
 
         </header>
 
-        <div class="content mt-3">
+        <div id="content" class="content mt-3">
             {% block content %}{% endblock %}
         </div>
 

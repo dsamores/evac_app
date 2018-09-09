@@ -119,7 +119,9 @@ def building_map(request):
     if request.user.groups.filter(name='group_landmarks_yes').exists():
         landmarks = Landmark.objects.filter(active=True)
 
+    evac_user = EvacUser.objects.get(user=request.user)
     context = {
+        'seen_tutorial': evac_user.seen_tutorial,
         'obstacles': serializers.serialize('json', obstacles),
         'landmarks': serializers.serialize('json', landmarks),
     }
@@ -137,6 +139,8 @@ def alerts(request):
         context = {
             'notifications': notifications,
         }
+    evac_user = EvacUser.objects.get(user=request.user)
+    context['seen_tutorial'] = evac_user.seen_tutorial
     return render(request, 'evacuation/alerts.html', context)
 
 

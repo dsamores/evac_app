@@ -48,3 +48,19 @@
 </div>
 {% endif %}
 {% endblock %}
+
+{% block scripts %}
+<script>
+    {% if not user.is_authenticated %}
+    console.log('Something wrong with user id. Please check.');
+    {% else %}
+    userId = {{ user.id }};
+    console.log(userId);
+    localStorage.setItem('userId', userId);
+    {% endif %}
+
+    {% if not seen_tutorial %}
+    window.location.href = '/walkthrough';
+    {% endif %}
+</script>
+{% endblock %}

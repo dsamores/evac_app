@@ -63,3 +63,76 @@ $(document).ready(function($) {
     }, 5000);
 });
 
+/* Save menu clicks */
+$("#main-menu a").click(function(){
+    (new Interaction('menu-click', $(this).attr('href'), window.location.href, null)).save();
+});
+
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+document.addEventListener('touchend', handleTouchEnd, false);
+
+var xDown = null;
+var yDown = null;
+var xUp = null;
+var yUp = null;
+var eventType;
+
+function getTouches(evt) {
+  return evt.touches ||             // browser API
+         evt.originalEvent.touches; // jQuery
+}
+
+function handleTouchStart(evt) {
+    xDown = getTouches(evt)[0].clientX;
+    yDown = getTouches(evt)[0].clientY;
+    eventType = 'tap';
+};
+
+function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    xUp = evt.touches[0].clientX;
+    yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
+        if ( xDiff > 5 ) {
+            /* left swipe */
+            eventType = 'left-swipe';
+        } else if ( xDiff < -5 ){
+            /* right swipe */
+            eventType = 'right-swipe';
+        }
+    } else {
+        if ( yDiff > 5 ) {
+            /* up swipe */
+            eventType = 'up-swipe';
+        } else if ( yDiff < -5 ) {
+            /* down swipe */
+            eventType = 'down-swipe';
+        }
+    }
+};
+
+function handleTouchEnd(evt) {
+    if(eventType == 'tap'){
+        (new Interaction(eventType, xDown + "," + yDown, window.location.href, null)).save();
+    }
+    else{
+        (new Interaction(eventType, xDown + "," + yDown + "-" + xUp + "," + yUp, window.location.href, null)).save();
+    }
+
+    xDown = null;
+    yDown = null;
+    xUp = null;
+    yUp = null;
+};
+
+$("#content a").click(function(){
+    (new Interaction('link-click', $(this).attr('href'), window.location.href, null)).save();
+});

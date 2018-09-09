@@ -31,10 +31,13 @@ class MessageAdmin(admin.ModelAdmin):
             notification = Notification(user=user, message=message)
             notification.save()
 
+        url = message.action_url if message.action_url else reverse('alerts')
+        url += '?from_push={}'.format(message.id)
+
         payload = {
             "head": message.title,
             "body": message.description,
-            "url": message.action_url
+            "url": url
         }
         send_group_notification(group_name=str(message.group), payload=payload, ttl=1000)
 
