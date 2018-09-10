@@ -1,7 +1,6 @@
 
 var map;
 var landmarkGroup;
-var currentFloor = 1;
 
 var zoom;
 var minZoom, maxZoom;

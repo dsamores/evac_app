@@ -84,12 +84,14 @@ def register(request):
 
         user.save()
 
+        floor = int(request.POST['floor']) if request.POST['floor'] else None
+
         extended_user = EvacUser(
             user=user,
             age=int(request.POST['age']),
             gender=request.POST['gender'],
             building_occupant=int(request.POST['building_occupant']),
-            floor=int(request.POST['floor']),
+            floor=floor,
             mobility_restriction='{}{}'.format('Yes: ' if int(request.POST['mobility']) else 'No', request.POST['mobility_restriction']),
             phone_make=request.POST['phone_make'],
             phone_use=','.join(request.POST.getlist('phone_use[]'))
@@ -124,6 +126,7 @@ def building_map(request):
         'seen_tutorial': evac_user.seen_tutorial,
         'obstacles': serializers.serialize('json', obstacles),
         'landmarks': serializers.serialize('json', landmarks),
+        'floor': evac_user.floor if evac_user.floor else 1,
     }
     return render(request, 'evacuation/building-map.html', context)
 
