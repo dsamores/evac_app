@@ -39,6 +39,7 @@
     <a class='dot'></a>
     <a class='dot'></a>
     {% endif %}
+    <a class='dot'></a>
   </div>
   <div class='walkthrough-body'>
     <ul class='screens animate'>
@@ -91,6 +92,18 @@
         <img src="{% static 'evacuation/images/walkthrough-assembly.png' %}" class="tutorial-image">
       </li>
       {% endif %}
+      <li class='screen'>
+        <h3>
+          Done
+        </h3>
+        <p>Thanks for going through this tutorial</p>
+        <form action="/">
+          <input type="hidden" name="seen_tutorial" value="{{ seen_tutorial }}" />
+          <button type="submit" class="btn btn-outline-success" id="start-drawing">
+            <i class="fa fa-check"></i>&nbsp; Close
+          </button>
+        </form>
+      </li>
     </ul>
     <button class='prev-screen'>
       <i class='icon-angle-left'></i>

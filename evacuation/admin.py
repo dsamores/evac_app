@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 
 from .models import Message, Notification, Obstacle, Landmark, EvacUser
 from webpush import send_group_notification
+from webpush.models import PushInformation
 
 admin.site.register(Obstacle)
 admin.site.register(Landmark)
@@ -28,8 +29,8 @@ class MessageAdmin(admin.ModelAdmin):
         message.sent = True
         message.save()
 
-        for user in User.objects.all():
-            notification = Notification(user=user, message=message)
+        for push_information in PushInformation.objects.filter(group=message.group):
+            notification = Notification(user=push_information.user, message=message)
             notification.save()
 
         url = message.action_url if message.action_url else reverse('alerts')
