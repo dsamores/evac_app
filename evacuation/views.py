@@ -90,7 +90,6 @@ def register(request):
             user=user,
             age=int(request.POST['age']),
             gender=request.POST['gender'],
-            building_occupant=int(request.POST['building_occupant']),
             floor=floor,
             mobility_restriction='{}{}'.format('Yes: ' if int(request.POST['mobility']) else 'No', request.POST['mobility_restriction']),
             phone_make=request.POST['phone_make'],
