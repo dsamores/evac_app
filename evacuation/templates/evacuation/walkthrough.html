@@ -6,6 +6,7 @@
 <head>
     {% load static %}
     {% load webpush_notifications %}
+    {% load evacuation_extras %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Walkthrough</title>
@@ -29,11 +30,15 @@
 <div class='walkthrough show reveal col-12 col-md-4 col-sm-6'>
   <div class='walkthrough-pagination'>
     <a class='dot active'></a>
+    {% if not request.user|has_group:"group_features_map" %}
+    <a class='dot'></a>
+    <a class='dot'></a>
+    {% endif %}
+    {% if not request.user|has_group:"group_features_alerts" %}
     <a class='dot'></a>
     <a class='dot'></a>
     <a class='dot'></a>
-    <a class='dot'></a>
-    <a class='dot'></a>
+    {% endif %}
   </div>
   <div class='walkthrough-body'>
     <ul class='screens animate'>
@@ -45,6 +50,7 @@
         <p>This app is designed to help you evacuate 11 Barry St building during emergencies.
           Please read this tutorial to learn the features this app offers.</p>
       </li>
+      {% if not request.user|has_group:"group_features_map" %}
       <li class='screen'>
         <img src="{% static 'evacuation/images/push-notifications.png' %}" class="logo-image">
         <h3>
@@ -60,6 +66,8 @@
         <p>Sent alerts will be available in your app.</p>
         <img src="{% static 'evacuation/images/walkthrough-alerts.png' %}" class="tutorial-image">
       </li>
+      {% endif %}
+      {% if not request.user|has_group:"group_features_alerts" %}
       <li class='screen'>
         <h3>
           Map
@@ -82,6 +90,7 @@
         <p>Zoom out in order to see the full route to the assembly area.</p>
         <img src="{% static 'evacuation/images/walkthrough-assembly.png' %}" class="tutorial-image">
       </li>
+      {% endif %}
     </ul>
     <button class='prev-screen'>
       <i class='icon-angle-left'></i>
