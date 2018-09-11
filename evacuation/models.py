@@ -122,6 +122,9 @@ class EvacUser(models.Model):
         blank=True, null=True
     )
 
+    def __str__(self):
+        return self.user.username
+
 
 class Landmark(models.Model):
     name = models.CharField(max_length=63)

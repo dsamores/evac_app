@@ -22,7 +22,12 @@ var exitIds = {
 
 }
 
-var assemblyAreaId = '5b68f6dd85cc1800048455cd';
+var assemblyAreaId = [
+    '5b68f6dd85cc1800048455cd',
+    '5b976807f2aaa60013ec2630',
+    '5b9768280ac4690013c499e0',
+    '5b976849f2aaa60013ec2633',
+];
 
 
 function Place(mwPlace){
@@ -110,7 +115,7 @@ function Location(lat, lng){
                     if(self.exitRoutes.length >= numRoutes){
                         self.sortRoutes();
 
-                        Mapwize.Api.getDirections({latitude: self.lat, longitude: self.lng, floor: self.floor}, {placeId: assemblyAreaId}, [{placeId: exitIds[self.exitRoutes[0][0]]}], null, function(err1, directions1){
+                        Mapwize.Api.getDirections({latitude: self.lat, longitude: self.lng, floor: self.floor}, {placeId: assemblyAreaId[self.floor]}, [{placeId: exitIds[self.exitRoutes[0][0]]}], null, function(err1, directions1){
                             if (err1) {
                                 console.error('An error occur during direction fetching', err);
                                 stopLoading();
