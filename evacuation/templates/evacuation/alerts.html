@@ -1,5 +1,6 @@
 {% extends "evacuation/base.html" %}
 
+{% load evacuation_extras %}
 
 
 {% block content %}
@@ -28,7 +29,7 @@
                 <div class="h5 text-secondary mb-0 mt-1">{{ notification.message.title }}</div>
                 <div class="text-muted font-weight-bold font-xs small">{{ notification.message.description }}</div>
             </div>
-            {% if notification.message.action_url %}
+            {% if notification.message.action_url and not request.user|has_group:"group_features_alerts" %}
             <hr>
             <div class="more-info pt-2" style="margin-bottom:-10px;">
                 <a class="font-weight-bold font-xs btn-block text-muted small" href="{{ notification.message.action_url }}">{{ notification.message.action_text }}<i class="fa fa-angle-right float-right font-lg"></i></a>

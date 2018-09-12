@@ -113,6 +113,8 @@ def logout_view(request):
 
 
 def building_map(request):
+    if request.user.groups.filter(name='group_features_alerts').exists():
+        redirect('alerts')
     if not request.user.is_authenticated:
         return redirect('browser_login')
     obstacles = Obstacle.objects.filter(active=True)
