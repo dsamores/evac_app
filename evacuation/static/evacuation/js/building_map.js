@@ -2,6 +2,7 @@
 var map;
 var landmarkGroup;
 var obstacleGroup;
+var startMarker;
 
 var zoom;
 var minZoom, maxZoom;
@@ -126,6 +127,17 @@ function Location(lat, lng){
                                 map.setMinZoom(minZoom);
                                 map.setMaxZoom(maxZoom);
                                 map.setMaxBounds(null);
+
+                                startMarker = L.marker([self.lat, self.lng], {
+                                    icon: new L.DivIcon({
+                                        className: 'landmark',
+                                        html:   '<img class="landmark-icon" src="static/evacuation/images/icons/start-pin.png" />' +
+                                                '<div class="landmark-text">Start</div>'
+                                    }),
+                                    zIndexOffset: 100
+                                });
+                                startMarker.addTo(map);
+
                                 stopLoading();
 
                             }
@@ -197,6 +209,8 @@ $(document).ready(function($) {
             map.setMaxBounds(map.getBounds());
 
             map.stopDirections();
+            if(startMarker)
+                map.removeLayer(startMarker);
             var location = new Location(e.latlng.lat, e.latlng.lng);
             location.getRoutesAndDisplay();
             (new Interaction('map-exitroute', 'lat:' + e.latlng.lat + ',lon:' + e.latlng.lng, window.location.href, null)).save();
@@ -278,7 +292,14 @@ function loadLandmarks(currentFloor){
             iconUrl: 'static/evacuation/images/icons/' + landmark.icon + '.png',
             iconSize: [30, 30]
         });
-        L.marker([landmark.latitude, landmark.longitude], {icon: landmarkIcon, zIndexOffset: 100}).addTo(landmarkGroup);
+        L.marker([landmark.latitude, landmark.longitude], {
+            icon: new L.DivIcon({
+                className: 'landmark',
+                html:   '<img class="landmark-icon" src="static/evacuation/images/icons/' + landmark.icon + '.png" />' +
+                        '<span class"landmark-text">' + landmark.display_name + '</span>'
+            }),
+            zIndexOffset: 100
+        }).addTo(landmarkGroup);
     }
 }
 

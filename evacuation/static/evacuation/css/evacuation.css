@@ -191,3 +191,12 @@
         left: 60px;
     }
 }
+
+.landmark-icon {
+    width: 30px;
+    margin: -32px 0 0 -8px;
+}
+
+.landmark-text {
+    margin: -10px 0 0 -5px;
+}
