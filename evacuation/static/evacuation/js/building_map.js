@@ -9,7 +9,7 @@ var minZoom, maxZoom;
 var maxBounds;
 
 var obstacleIcon = L.icon({
-    iconUrl: images_url + 'delete2.png',
+    iconUrl: imagesUrl + 'blocked.png',
     iconSize: [30, 30]
 });
 

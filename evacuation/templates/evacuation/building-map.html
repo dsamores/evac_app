@@ -47,7 +47,7 @@ Click somewhere in the map to see an exit route
 
 {% block scripts %}
 <script>
-    var images_url = "{% static 'evacuation/images/' %}";
+    var imagesUrl = "{% static 'evacuation/images/icons/' %}";
     var obstacles = {{ obstacles|safe }};
     var landmarks = {{ landmarks|safe }};
     var currentFloor = {{ floor }};
