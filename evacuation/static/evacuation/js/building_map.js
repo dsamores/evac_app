@@ -1,6 +1,7 @@
 
 var map;
 var landmarkGroup;
+var obstacleGroup;
 
 var zoom;
 var minZoom, maxZoom;
@@ -162,11 +163,7 @@ $(document).ready(function($) {
         stopLoading();
     });
     landmarkGroup = L.layerGroup().addTo(map);
-
-    for(i in obstacles){
-        var obstacle = obstacles[i].fields;
-        L.marker([obstacle.latitude, obstacle.longitude], {icon: obstacleIcon, zIndexOffset: 100}).addTo(map);
-    }
+    obstacleGroup = L.layerGroup().addTo(map);
 
     map.on('placeClick', function (e) {
 //        console.log(e.place);
@@ -227,6 +224,7 @@ $(document).ready(function($) {
         }
 
         loadLandmarks(currentFloor);
+        loadObstacles();
         saveMapEvent('map-floorChange');
     });
 
@@ -264,6 +262,18 @@ function loadLandmarks(currentFloor){
             iconSize: [30, 30]
         });
         L.marker([landmark.latitude, landmark.longitude], {icon: landmarkIcon, zIndexOffset: 100}).addTo(landmarkGroup);
+    }
+}
+
+function loadObstacles(){
+    obstacleGroup.clearLayers();
+    for(i in obstacles){
+        var obstacle = obstacles[i].fields;
+        for(var ei in exitIds){
+            if(obstacle.place_id == exitIds[ei]){
+                L.marker([obstacle.latitude, obstacle.longitude], {icon: obstacleIcon, zIndexOffset: 100}).addTo(obstacleGroup);
+            }
+        }
     }
 }
 
