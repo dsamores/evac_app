@@ -67,6 +67,7 @@ class Interaction(models.Model):
     page = models.CharField(max_length=127, blank=True, null=True)
     element = models.CharField(max_length=127, blank=True, null=True)
     time = models.DateTimeField()
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class Obstacle(models.Model):
