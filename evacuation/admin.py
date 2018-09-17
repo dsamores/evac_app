@@ -10,8 +10,18 @@ from webpush import send_group_notification
 from webpush.models import PushInformation
 
 admin.site.register(Obstacle)
-admin.site.register(Landmark)
 admin.site.register(EvacUser)
+
+
+@admin.register(Landmark)
+class LandmarkAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'name',
+        'display_name',
+        'floor',
+        'active',
+    )
 
 
 @admin.register(Message)

@@ -12,6 +12,7 @@ done
 
 echo "Apply database migrations."
 python3 manage.py migrate
+python3 manage.py loaddata exits_and_assembly.json
 
 echo "Run collectstatic"
 python3 manage.py collectstatic --noinput --verbosity=0
