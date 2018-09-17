@@ -128,6 +128,7 @@ def building_map(request):
         'obstacles': serializers.serialize('json', obstacles),
         'landmarks': serializers.serialize('json', landmarks),
         'floor': evac_user.floor if evac_user.floor else 1,
+        'show_assembly': bool(request.GET.get('show_assembly', False)),
     }
     return render(request, 'evacuation/building-map.html', context)
 

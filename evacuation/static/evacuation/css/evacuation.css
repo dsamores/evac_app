@@ -143,10 +143,51 @@
 }
 .level-overlay{
     position: absolute;
-    right: 16px;
-    bottom: 38vh;
+    right: 35px;
+    top: -20px;
     z-index: 1000;
     text-align: center;
     font-size: 14px;
     font-weight: 600;
+}
+.assembly-overlay{
+    position: absolute;
+    left: 70px;
+    top: 10px;
+    z-index: 1000;
+}
+.assembly-overlay button{
+    background-color: #fff;
+    width: 83px;
+    height: 50px;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    display: block;
+    line-height: 18px;
+    border-radius: 0;
+    border: 2px solid rgba(0,0,0,.2);
+    font-size: 13px;
+    padding: 4px;
+}
+.assembly-overlay button:hover {
+    background-color: #ddd;
+}
+
+.assembly-overlay button:active {
+  background-color: #aaa;
+}
+.content{
+    position: relative;
+}
+
+@media (max-width: 575.99px) {
+    .level-overlay{
+        right: 25px;
+    }
+    .assembly-overlay{
+        left: 60px;
+    }
 }

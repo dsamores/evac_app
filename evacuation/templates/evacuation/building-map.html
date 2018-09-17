@@ -24,7 +24,9 @@ Click somewhere in the map to see an exit route
 {% block content %}
 <div id="indoor-map"></div>
 
-<div class="level-overlay">Choose<br>level</div>
+<div class="assembly-overlay"><button type="button" id="button-assembly-area">Assembly<br>Area</button></div>
+
+<div class="level-overlay">Level</div>
 
 <div class="modal modal-backdrop fade show" id="staticModal">
     <div class="modal-dialog modal-sm" role="document">
@@ -49,6 +51,7 @@ Click somewhere in the map to see an exit route
     var obstacles = {{ obstacles|safe }};
     var landmarks = {{ landmarks|safe }};
     var currentFloor = {{ floor }};
+    var showAssembly = {{ show_assembly|yesno:"true,false" }};
 </script>
 <script src="{% static 'evacuation/js/route_cache.js' %}"></script>
 <script src="{% static 'evacuation/js/building_map.js' %}"></script>

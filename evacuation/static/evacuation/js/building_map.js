@@ -147,11 +147,23 @@ function stopLoading(){
 
 $(document).ready(function($) {
     startLoading();
+    var initialZoom, initialCenter;
+    if(showAssembly){
+        initialZoom = 17;
+        initialCenter = [-37.802894303416345, 144.96115372516218];
+    }
+    else{
+        initialZoom = 19;
+        initialCenter = [-37.803704, 144.959694];
+    }
     map = Mapwize.map('indoor-map', {
         apiKey: 'e32cf47a2a7a0df9e93d13fa4535b940',
-        center: [-37.803704, 144.959694],
-        zoom: 19,
+        center: initialCenter,
+        zoom: initialZoom,
         floor: currentFloor,
+        showUserPosition: false,
+        mapwizeAttribution: false,
+        floorControlOptions: {'position': 'topright'},
     }, function (err, mapInstance) {
         if (err) {
             console.error('An error occur during map initialization', err);
@@ -242,6 +254,11 @@ $(document).ready(function($) {
 
     map.on('moveend', function(e) {
         saveMapEvent('map-moveend');
+    });
+
+    $("#button-assembly-area").click(function (){
+        map.panTo(new L.LatLng(-37.802894303416345, 144.96115372516218));
+        map.setZoom(17);
     });
 
 });
