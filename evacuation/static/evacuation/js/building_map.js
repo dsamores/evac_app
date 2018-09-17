@@ -2,7 +2,7 @@
 var map;
 var landmarkGroup;
 var obstacleGroup;
-var startMarker;
+var startLocation;
 
 var zoom;
 var minZoom, maxZoom;
@@ -82,6 +82,7 @@ function Location(lat, lng){
     this.lng = lng;
     this.floor = currentFloor;
     this.exitRoutes = new Array();
+    this.marker = null;
 
     this.sortRoutes = function(){
         this.exitRoutes.sort(function(er1, er2){
@@ -128,7 +129,7 @@ function Location(lat, lng){
                                 map.setMaxZoom(maxZoom);
                                 map.setMaxBounds(null);
 
-                                startMarker = L.marker([self.lat, self.lng], {
+                                self.marker = L.marker([self.lat, self.lng], {
                                     icon: new L.DivIcon({
                                         className: 'landmark',
                                         html:   '<img class="landmark-icon" src="static/evacuation/images/icons/start-pin.png" />' +
@@ -136,7 +137,7 @@ function Location(lat, lng){
                                     }),
                                     zIndexOffset: 100
                                 });
-                                startMarker.addTo(map);
+                                self.marker.addTo(map);
 
                                 stopLoading();
 
@@ -176,6 +177,7 @@ $(document).ready(function($) {
         showUserPosition: false,
         mapwizeAttribution: false,
         floorControlOptions: {'position': 'topright'},
+        displayPlaces: false,
     }, function (err, mapInstance) {
         if (err) {
             console.error('An error occur during map initialization', err);
@@ -190,7 +192,7 @@ $(document).ready(function($) {
     obstacleGroup = L.layerGroup().addTo(map);
 
     map.on('placeClick', function (e) {
-//        console.log(e.place);
+        console.log(e.place);
 //        if(e.place.placeType.name != 'ISO7010-E001' && e.place.placeType.name != 'ISO7010-E002'){
 //            map.stopDirections();
 //            var place = new Place(e.place);
@@ -209,16 +211,24 @@ $(document).ready(function($) {
             map.setMaxBounds(map.getBounds());
 
             map.stopDirections();
-            if(startMarker)
-                map.removeLayer(startMarker);
-            var location = new Location(e.latlng.lat, e.latlng.lng);
-            location.getRoutesAndDisplay();
+            if(startLocation && startLocation.marker)
+                map.removeLayer(startLocation.marker);
+            startLocation = new Location(e.latlng.lat, e.latlng.lng);
+            startLocation.getRoutesAndDisplay();
             (new Interaction('map-exitroute', 'lat:' + e.latlng.lat + ',lon:' + e.latlng.lng, window.location.href, null)).save();
         }
     });
 
     map.on('floorChange', function (e) {
         currentFloor = e.floor;
+        if(startLocation && startLocation.marker){
+            if(startLocation.floor == currentFloor){
+                startLocation.marker.addTo(map);
+            }
+            else{
+                map.removeLayer(startLocation.marker);
+            }
+        }
         if(currentFloor == 0){
             exitIds = {
                 'exit1': '5b68fc6e7c31b70004d8b26a',
