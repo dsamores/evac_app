@@ -87,13 +87,19 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>In what level is your office located?</label>
+                            <label>Your workstation:</label>
                             <select id="floor" name="floor" class="form-control">
-                              <option value="">--</option>
+                              <option value="">-- Choose level --</option>
                               <option value="0">Ground floor</option>
                               <option value="1">Level 1</option>
                               <option value="2">Level 2</option>
                               <option value="3">Level 3</option>
+                            </select>
+                            <select id="office" name="office" class="form-control">
+                              <option value="">-- Choose office --</option>
+                            </select>
+                            <select id="desk" name="desk" class="form-control">
+                              <option value="">-- Choose desk --</option>
                             </select>
                         </div>
                           <div class="form-group">
@@ -215,6 +221,37 @@
     <script src="{% static 'evacuation/js/popper.min.js' %}"></script>
     <script src="{% static 'evacuation/js/plugins.js' %}"></script>
     <script src="{% static 'evacuation/js/register.js' %}"></script>
+
+    <script>
+        var floorOfficeDesks = {{ floor_office_desks|safe }};
+
+        $("#floor").change(function () {
+            var val = $(this).val();
+            var officeSelect = $("#office");
+            officeSelect.empty();
+            officeSelect.append($("<option />").val("").text("-- Choose office --"));
+            if(val != ""){
+                var result = Object.keys(floorOfficeDesks[val]);
+                $.each(result, function() {
+                    officeSelect.append($("<option />").val(this).text(this));
+                });
+            }
+            $("#office").change();
+        });
+
+        $("#office").change(function () {
+            var val = $(this).val();
+            var deskSelect = $("#desk");
+            deskSelect.empty();
+            deskSelect.append($("<option />").val("").text("-- Choose desk --"));
+            if(val != ""){
+                var result = floorOfficeDesks[$("#floor").val()][val];
+                $.each(result, function() {
+                    deskSelect.append($("<option />").val(this).text(this));
+                });
+            }
+        });
+    </script>
 
 
 </body>

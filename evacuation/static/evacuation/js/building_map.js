@@ -77,12 +77,13 @@ function Place(mwPlace){
     }
 }
 
-function Location(lat, lng){
+function Location(lat, lng, text){
     this.lat = lat;
     this.lng = lng;
     this.floor = currentFloor;
     this.exitRoutes = new Array();
     this.marker = null;
+    this.text = text ? text : 'Start';
 
     this.sortRoutes = function(){
         this.exitRoutes.sort(function(er1, er2){
@@ -110,6 +111,9 @@ function Location(lat, lng){
             Mapwize.Api.getDirections({latitude: self.lat, longitude: self.lng, floor: self.floor}, {placeId: exitIds[exitId]}, null, null, function(err, directions){
                 if (err) {
                     console.error('An error occur during direction fetching', err);
+                    map.setMinZoom(minZoom);
+                    map.setMaxZoom(maxZoom);
+                    map.setMaxBounds(null);
                     stopLoading();
                 }
                 else {
@@ -121,6 +125,9 @@ function Location(lat, lng){
                         Mapwize.Api.getDirections({latitude: self.lat, longitude: self.lng, floor: self.floor}, {placeId: assemblyAreaId[self.floor]}, [{placeId: exitIds[self.exitRoutes[0][0]]}], null, function(err1, directions1){
                             if (err1) {
                                 console.error('An error occur during direction fetching', err);
+                                map.setMinZoom(minZoom);
+                                map.setMaxZoom(maxZoom);
+                                map.setMaxBounds(null);
                                 stopLoading();
                             }
                             else {
@@ -133,7 +140,7 @@ function Location(lat, lng){
                                     icon: new L.DivIcon({
                                         className: 'landmark',
                                         html:   '<img class="landmark-icon" src="static/evacuation/images/icons/start-pin.png" />' +
-                                                '<div class="landmark-text">Start</div>'
+                                                '<div class="landmark-text">' + self.text + '</div>'
                                     }),
                                     zIndexOffset: 100
                                 });
@@ -185,8 +192,11 @@ $(document).ready(function($) {
         else {
             console.log('map is now loaded');
             // mapInstance.showDirections({placeId: '5b6904757c31b70004d8b28b'}, {placeId: '5b68fc6e7c31b70004d8b26a'});
+            if(deskLat)
+                displayExitRoute(deskLat, deskLon, 'map-exitroute-from-desk', 'Your desk');
         }
-        stopLoading();
+        if(!deskLat)
+            stopLoading();
     });
     landmarkGroup = L.layerGroup().addTo(map);
     obstacleGroup = L.layerGroup().addTo(map);
@@ -203,19 +213,7 @@ $(document).ready(function($) {
     map.on('click', function (e) {
         console.log('lat:', e.latlng.lat, 'lon:', e.latlng.lng);
         if(insideBuilding([e.latlng.lat, e.latlng.lng])){
-            zoom = map.getZoom();
-            minZoom = map.getMinZoom();
-            maxZoom = map.getMaxZoom();
-            map.setMinZoom(zoom);
-            map.setMaxZoom(zoom);
-            map.setMaxBounds(map.getBounds());
-
-            map.stopDirections();
-            if(startLocation && startLocation.marker)
-                map.removeLayer(startLocation.marker);
-            startLocation = new Location(e.latlng.lat, e.latlng.lng);
-            startLocation.getRoutesAndDisplay();
-            (new Interaction('map-exitroute', 'lat:' + e.latlng.lat + ',lon:' + e.latlng.lng, window.location.href, null)).save();
+            displayExitRoute(e.latlng.lat, e.latlng.lng, 'map-exitroute');
         }
     });
 
@@ -286,6 +284,22 @@ $(document).ready(function($) {
     });
 
 });
+
+function displayExitRoute(lat, lng, eventName, markerText){
+    zoom = map.getZoom();
+    minZoom = map.getMinZoom();
+    maxZoom = map.getMaxZoom();
+    map.setMinZoom(zoom);
+    map.setMaxZoom(zoom);
+    map.setMaxBounds(map.getBounds());
+
+    map.stopDirections();
+    if(startLocation && startLocation.marker)
+        map.removeLayer(startLocation.marker);
+    startLocation = new Location(lat, lng, markerText);
+    startLocation.getRoutesAndDisplay();
+    (new Interaction(eventName, 'lat:' + lat + ',lon:' + lng, window.location.href, null)).save();
+}
 
 function saveMapEvent(eventName){
     var eventDescription = "zoom:" + map.getZoom() + ",center:" + map.getCenter();

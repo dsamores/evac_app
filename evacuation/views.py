@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .models import Notification, Interaction, Obstacle, EvacUser, Landmark
+from .models import Notification, Interaction, Obstacle, EvacUser, Landmark, Office, Desk
 
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import api_view
@@ -12,6 +12,7 @@ import datetime
 from django.core import serializers
 from django.contrib import messages
 import random
+from collections import defaultdict
 
 
 def index(request):
@@ -55,7 +56,17 @@ def register(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
             return redirect('index')
-        return render(request, 'evacuation/register.html')
+        floor_offices = {0: defaultdict(dict), 1: defaultdict(dict), 2: defaultdict(dict), 3: defaultdict(dict)}
+        offices = Office.objects.all()
+        for office in offices:
+            floor_offices[office.floor][office.name] = []
+        desks = Desk.objects.all()
+        for desk in desks:
+            floor_offices[desk.office.floor][desk.office.name].append(desk.name)
+        context = {
+            'floor_office_desks': json.dumps(floor_offices)
+        }
+        return render(request, 'evacuation/register.html', context)
     else:
         email = request.POST['email']
         password = request.POST['password']
@@ -85,12 +96,16 @@ def register(request):
         user.save()
 
         floor = int(request.POST['floor']) if request.POST['floor'] else None
+        office = Office.objects.get(name=request.POST['office']) if request.POST['office'] else None
+        desk = Desk.objects.get(name=request.POST['desk'], office=office) if request.POST['desk'] else None
 
         extended_user = EvacUser(
             user=user,
             age=int(request.POST['age']),
             gender=request.POST['gender'],
             floor=floor,
+            office=office,
+            desk=desk,
             mobility_restriction='{}{}'.format('Yes: ' if int(request.POST['mobility']) else 'No', request.POST['mobility_restriction']),
             phone_make=request.POST['phone_make'],
             phone_use=','.join(request.POST.getlist('phone_use[]'))
@@ -123,11 +138,21 @@ def building_map(request):
         landmarks = Landmark.objects.filter(active=True)
 
     evac_user = EvacUser.objects.get(user=request.user)
+
+    if evac_user.desk:
+        lat, lon = evac_user.desk.latitude, evac_user.desk.longitude
+    elif evac_user.office:
+        lat, lon = evac_user.office.latitude, evac_user.office.longitude
+    else:
+        lat, lon = None, None
+
     context = {
         'seen_tutorial': evac_user.seen_tutorial,
         'obstacles': serializers.serialize('json', obstacles),
         'landmarks': serializers.serialize('json', landmarks),
         'floor': evac_user.floor if evac_user.floor else 1,
+        'desk_lat': lat,
+        'desk_lon': lon,
         'show_assembly': bool(request.GET.get('show_assembly', False)),
     }
     return render(request, 'evacuation/building-map.html', context)

@@ -52,6 +52,12 @@ Click somewhere in the map to see an exit route
     var landmarks = {{ landmarks|safe }};
     var currentFloor = {{ floor }};
     var showAssembly = {{ show_assembly|yesno:"true,false" }};
+    var deskLat, deskLon;
+    {% if desk_lat %}
+        deskLat = {{ desk_lat }};
+        deskLon = {{ desk_lon }};
+    {% endif %}
+    console.log(deskLat, deskLon);
 </script>
 <script src="{% static 'evacuation/js/route_cache.js' %}"></script>
 <script src="{% static 'evacuation/js/building_map.js' %}"></script>

@@ -105,6 +105,8 @@ class EvacUser(models.Model):
         choices=FLOORS,
         blank=True, null=True
     )
+    office = models.ForeignKey("Office", on_delete=models.CASCADE, blank=True, null=True)
+    desk = models.ForeignKey("Desk", on_delete=models.CASCADE, blank=True, null=True)
     mobility_restriction = models.CharField(
         max_length=255,
         blank=True,
@@ -138,3 +140,23 @@ class Landmark(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Office(models.Model):
+    name = models.CharField(max_length=63)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    floor = models.PositiveIntegerField()
+
+    def __str__(self):
+        return '%s' % self.name
+
+
+class Desk(models.Model):
+    name = models.CharField(max_length=63)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    office = models.ForeignKey(Office, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s.%s' % (self.office, self.name)

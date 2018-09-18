@@ -1,16 +1,33 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse, re_path
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib import messages
-from django.contrib.auth.models import User
 
-from .models import Message, Notification, Obstacle, Landmark, EvacUser
+from .models import Message, Notification, Obstacle, Landmark, EvacUser, Office, Desk
 from webpush import send_group_notification
 from webpush.models import PushInformation
 
 admin.site.register(Obstacle)
 admin.site.register(EvacUser)
+
+
+@admin.register(Office)
+class OfficeAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'name',
+        'floor',
+    )
+
+
+@admin.register(Desk)
+class DeskAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'name',
+        'office',
+    )
 
 
 @admin.register(Landmark)
