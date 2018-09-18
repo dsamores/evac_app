@@ -53,7 +53,7 @@
                                 <label for="q_{{ question.id }}" class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
                             </div>
                             <div class="col-12">
-                                <textarea name="q_{{ question.id }}" id="q_{{ question.id }}" rows="3" placeholder="" class="form-control" required></textarea>
+                                <textarea name="q_{{ question.id }}" id="q_{{ question.id }}" rows="3" placeholder="" class="form-control" {{ question.required|yesno:"required," }}></textarea>
                             </div>
                         </div>
                     {% elif question.type == 'SingleChoice' %}
@@ -66,7 +66,7 @@
                                   {% for choice in question.get_choices %}
                                     <div class="radio">
                                       <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" required>{{ choice.text }}
+                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" {{ question.required|yesno:"required," }}>{{ choice.text }}
                                       </label>
                                     </div>
                                   {% endfor %}
@@ -83,13 +83,13 @@
                                   {% for choice in question.get_choices %}
                                     <div class="radio">
                                       <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" required>{{ choice.text }}
+                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" {{ question.required|yesno:"required," }}>{{ choice.text }}
                                       </label>
                                     </div>
                                   {% endfor %}
                                     <div class="radio">
                                       <label for="q_{{ question.id }}_c_other" class="form-check-label ">
-                                        <input type="radio" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input" required>Other:
+                                        <input type="radio" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input" {{ question.required|yesno:"required," }}>Other:
                                           <input type="text" name="other_{{ question.id }}" class="form-control">
                                       </label>
                                     </div>
@@ -103,13 +103,15 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check">
-                                  {% for choice in question.get_choices %}
-                                    <div class="checkbox">
-                                      <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                        <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
-                                      </label>
-                                    </div>
-                                  {% endfor %}
+                                  <div class="checkbox-group {{ question.required|yesno:'required,' }}">
+                                      {% for choice in question.get_choices %}
+                                        <div class="checkbox">
+                                          <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                            <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
+                                          </label>
+                                        </div>
+                                      {% endfor %}
+                                  </div>
                               </div>
                             </div>
                         </div>
@@ -120,19 +122,21 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check">
-                                  {% for choice in question.get_choices %}
-                                    <div class="checkbox">
-                                      <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                        <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
-                                      </label>
-                                    </div>
-                                  {% endfor %}
-                                    <div class="checkbox">
-                                      <label for="q_{{ question.id }}_c_other" class="form-check-label ">
-                                        <input type="checkbox" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input">Other:
-                                          <input type="text" name="other_{{ question.id }}" class="form-control">
-                                      </label>
-                                    </div>
+                                  <div class="checkbox-group {{ question.required|yesno:'required,' }}">
+                                      {% for choice in question.get_choices %}
+                                        <div class="checkbox">
+                                          <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                            <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
+                                          </label>
+                                        </div>
+                                      {% endfor %}
+                                        <div class="checkbox">
+                                          <label for="q_{{ question.id }}_c_other" class="form-check-label ">
+                                            <input type="checkbox" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input">Other:
+                                              <input type="text" name="other_{{ question.id }}" class="form-control">
+                                          </label>
+                                        </div>
+                                  </div>
                               </div>
                             </div>
                         </div>
@@ -251,4 +255,5 @@
     {% endif %}
 {% endfor %}
 </script>
+<script type="text/javascript" src="{% static 'survey/js/survey.js' %}"></script>
 {% endblock %}
