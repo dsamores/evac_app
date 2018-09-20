@@ -8,6 +8,8 @@ var zoom;
 var minZoom, maxZoom;
 var maxBounds;
 
+var areMarkersDisplayed = false;
+
 var obstacleIcon = L.icon({
     iconUrl: imagesUrl + 'blocked.png',
     iconSize: [30, 30]
@@ -256,9 +258,11 @@ $(document).ready(function($) {
                 'exit13': '5b7c02f243d06c002ba60673',
             }
         }
-
-        loadLandmarks(currentFloor);
-        loadObstacles();
+        if(map.getZoom() > 18){
+            loadLandmarks(currentFloor);
+            loadObstacles();
+            areMarkersDisplayed = true;
+        }
         saveMapEvent('map-floorChange');
     });
 
@@ -268,6 +272,16 @@ $(document).ready(function($) {
 
     map.on('zoomend', function(e) {
         saveMapEvent('map-zoomend');
+        if(!areMarkersDisplayed && map.getZoom() > 18){
+            loadLandmarks(currentFloor);
+            loadObstacles();
+            areMarkersDisplayed = true;
+        }
+        else if(areMarkersDisplayed && map.getZoom() <= 18){
+            landmarkGroup.clearLayers();
+            obstacleGroup.clearLayers();
+            areMarkersDisplayed = false;
+        }
     });
 
     map.on('movestart', function(e) {
