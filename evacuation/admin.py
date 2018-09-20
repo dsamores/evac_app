@@ -4,7 +4,7 @@ from django.urls import reverse, re_path
 from django.shortcuts import redirect
 from django.contrib import messages
 
-from .models import Message, Notification, Obstacle, Landmark, EvacUser, Office, Desk
+from .models import Message, Notification, Obstacle, Place, EvacUser, Office, Desk
 from webpush import send_group_notification
 from webpush.models import PushInformation
 
@@ -30,14 +30,15 @@ class DeskAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Landmark)
-class LandmarkAdmin(admin.ModelAdmin):
+@admin.register(Place)
+class PlaceAdmin(admin.ModelAdmin):
 
     list_display = (
         'name',
         'display_name',
         'floor',
         'active',
+        'is_landmark',
     )
 
 

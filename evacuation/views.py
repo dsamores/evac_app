@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .models import Notification, Interaction, Obstacle, EvacUser, Landmark, Office, Desk
+from .models import Notification, Interaction, Obstacle, EvacUser, Place, Office, Desk
 
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import api_view
@@ -133,9 +133,10 @@ def building_map(request):
     if request.user.groups.filter(name='group_features_alerts').exists():
         return redirect('alerts')
     obstacles = Obstacle.objects.filter(active=True)
-    landmarks = []
     if request.user.groups.filter(name='group_landmarks_yes').exists():
-        landmarks = Landmark.objects.filter(active=True)
+        landmarks = Place.objects.filter(active=True)
+    else:
+        landmarks = Place.objects.filter(active=True, is_landmark=False)
 
     evac_user = EvacUser.objects.get(user=request.user)
 

@@ -129,7 +129,7 @@ class EvacUser(models.Model):
         return self.user.username
 
 
-class Landmark(models.Model):
+class Place(models.Model):
     name = models.CharField(max_length=63)
     display_name = models.CharField(max_length=63, blank=True, null=True)
     latitude = models.FloatField()
@@ -137,6 +137,7 @@ class Landmark(models.Model):
     floor = models.PositiveIntegerField()
     icon = models.CharField(max_length=63, blank=True, null=True)
     active = models.BooleanField(default=True)
+    is_landmark = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
