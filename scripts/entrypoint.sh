@@ -12,7 +12,7 @@ done
 
 echo "Apply database migrations."
 python3 manage.py migrate
-python3 manage.py loaddata exits_and_assembly.json
+python3 manage.py loaddata places.json
 python3 manage.py loaddata offices_and_desks.json
 
 echo "Run collectstatic"
