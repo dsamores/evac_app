@@ -333,7 +333,7 @@ function loadLandmarks(currentFloor){
             icon: new L.DivIcon({
                 className: 'landmark',
                 html:   '<img class="landmark-icon" src="static/evacuation/images/icons/' + landmark.icon + '.png" />' +
-                        '<span class"landmark-text">' + landmark.display_name + '</span>'
+                        '<div class="landmark-text">' + landmark.display_name + '</div>'
             }),
             zIndexOffset: 100
         }).addTo(landmarkGroup);
