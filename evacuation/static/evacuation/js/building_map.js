@@ -293,8 +293,7 @@ $(document).ready(function($) {
     });
 
     $("#button-assembly-area").click(function (){
-        map.panTo(new L.LatLng(-37.802894303416345, 144.96115372516218));
-        map.setZoom(17);
+        map.setView(new L.LatLng(-37.802894303416345, 144.96115372516218), 17);
     });
 
 });
