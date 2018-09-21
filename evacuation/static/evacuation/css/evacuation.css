@@ -200,6 +200,7 @@
 }
 
 .landmark-text {
+    white-space: nowrap;
     margin-top: 2px;
     background-color: #fff;
     width: fit-content;
@@ -208,4 +209,8 @@
     border: 1px solid #555;
     line-height: 14px;
     border-radius: 3px;
+    text-align: center;
+    font-size: 11px;
 }
+.mapwize-marker-icon { display: none !important; }
+.mapwize-marker-icon ~ .mapwize-marker-icon { display: block !important; }

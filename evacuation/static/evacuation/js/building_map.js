@@ -195,7 +195,7 @@ $(document).ready(function($) {
             console.log('map is now loaded');
             // mapInstance.showDirections({placeId: '5b6904757c31b70004d8b28b'}, {placeId: '5b68fc6e7c31b70004d8b26a'});
             if(deskLat)
-                displayExitRoute(deskLat, deskLon, 'map-exitroute-from-desk', 'Your desk');
+                displayExitRoute(deskLat, deskLon, 'map-exitroute-from-desk', 'Desk');
         }
         if(!deskLat)
             stopLoading();
