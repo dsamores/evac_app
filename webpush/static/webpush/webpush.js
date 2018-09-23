@@ -72,6 +72,9 @@ window.addEventListener('load', function() {
       } else {
         subBtn.textContent = 'Enable Push Messaging';
         subBtn.disabled = false;
+        if(window.location.href.includes("alerts")){
+            subBtn.click();
+        }
       }
 
     }

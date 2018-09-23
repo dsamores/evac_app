@@ -1,10 +1,17 @@
 {% extends "evacuation/base.html" %}
 
+{% load webpush_notifications %}
 {% load evacuation_extras %}
+
+{% block styles %}
+{% webpush_header %}
+{% endblock %}
 
 
 {% block content %}
-
+<div style="display:none">
+{% webpush_button %}
+</div>
 <div class="breadcrumbs">
     <div class="col-12">
         <div class="page-header float-left">
