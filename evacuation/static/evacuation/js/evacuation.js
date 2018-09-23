@@ -53,7 +53,7 @@ $(document).ready(function($) {
         }
     });
 
-    (new Interaction('access', '', window.location.href, null)).save();
+    (new Interaction('access', navigator.userAgent, window.location.href, null)).save();
     var notification_ids = $.map( $('[name="notification_id"]'), function( n, i ) {
       return n.value;
     });
