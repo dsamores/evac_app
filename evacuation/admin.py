@@ -8,8 +8,16 @@ from .models import Message, Notification, Obstacle, Place, EvacUser, Office, De
 from webpush import send_group_notification
 from webpush.models import PushInformation
 
-admin.site.register(Obstacle)
 admin.site.register(EvacUser)
+
+
+@admin.register(Obstacle)
+class ObstacleAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'name',
+        'active',
+    )
 
 
 @admin.register(Office)
@@ -48,6 +56,7 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
+        'group',
         'date_created',
         'message_actions',
     )

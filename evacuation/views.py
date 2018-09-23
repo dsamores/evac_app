@@ -248,3 +248,12 @@ def save_interactions(request):
         )
         interaction.save()
     return Response({"success": True})
+
+
+@api_view(['POST'])
+def check_reload(request):
+    evac_user = EvacUser.objects.get(user=request.user)
+    should_reload = evac_user.should_reload
+    evac_user.should_reload = False
+    evac_user.save()
+    return Response({"reload": should_reload})

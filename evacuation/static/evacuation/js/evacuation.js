@@ -35,6 +35,14 @@ function flushInteractions(){
     }
 }
 
+function checkShouldReload(){
+    $.post("/check_reload")
+        .done(function( response ) {
+            if(response['reload'])
+                location.reload();
+        });
+}
+
 $(document).ready(function($) {
 
     var csrftoken = getCookie('csrftoken');
@@ -61,6 +69,10 @@ $(document).ready(function($) {
     setInterval(function() {
          flushInteractions();
     }, 5000);
+
+    setInterval(function() {
+        checkShouldReload();
+    }, 3000);
 });
 
 /* Save menu clicks */

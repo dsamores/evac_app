@@ -20,4 +20,5 @@ urlpatterns = [
     path('auto_login', views.auto_login, name='auto_login'),
     path('read_notifications', views.read_notifications, name='read_notifications'),
     path('save_interactions', views.save_interactions, name='save_interactions'),
+    path('check_reload', views.check_reload, name='check_reload'),
 ]

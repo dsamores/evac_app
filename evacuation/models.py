@@ -70,17 +70,6 @@ class Interaction(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-class Obstacle(models.Model):
-    name = models.CharField(max_length=63)
-    place_id = models.CharField(max_length=31, blank=True, null=True)
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
-    active = models.BooleanField(default=False)
-
-    def __str__(self):
-        return '%s' % self.name
-
-
 class EvacUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.PositiveIntegerField(blank=True, null=True)
@@ -124,9 +113,31 @@ class EvacUser(models.Model):
         choices=PHONE_MAKES,
         blank=True, null=True
     )
+    should_reload = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.user.username
+
+
+class Obstacle(models.Model):
+    name = models.CharField(max_length=63)
+    place_id = models.CharField(max_length=31, blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    active = models.BooleanField(default=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__previous_active = self.active
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.__previous_active != self.active:
+            EvacUser.objects.all().update(should_reload=True)
+        self.__previous_active = self.active
+
+    def __str__(self):
+        return '%s' % self.name
 
 
 class Place(models.Model):
