@@ -38,13 +38,14 @@
     <a class='dot'></a>
     <a class='dot'></a>
     <a class='dot'></a>
+    <a class='dot'></a>
     {% endif %}
     <a class='dot'></a>
   </div>
   <div class='walkthrough-body'>
     <ul class='screens animate'>
       <li class='screen active'>
-        <img src="{% static 'evacuation/images/evacassist.png' %}" class="logo-image">
+        <img src="{% static 'walkthrough/images/evacassist.png' %}" class="logo-image">
         <h3>
           Hey there! Welcome to EvacAssist!
         </h3>
@@ -53,7 +54,7 @@
       </li>
       {% if not request.user|has_group:"group_features_map" %}
       <li class='screen'>
-        <img src="{% static 'evacuation/images/push-notifications.png' %}" class="logo-image">
+        <img src="{% static 'walkthrough/images/push-notifications.png' %}" class="logo-image">
         <h3>
           Push Notifications
         </h3>
@@ -65,7 +66,7 @@
           Alerts
         </h3>
         <p>Sent alerts will be available in your app.</p>
-        <img src="{% static 'evacuation/images/walkthrough-alerts.png' %}" class="tutorial-image">
+        <img src="{% static 'walkthrough/images/walkthrough-alerts.png' %}" class="tutorial-image">
       </li>
       {% endif %}
       {% if not request.user|has_group:"group_features_alerts" %}
@@ -74,34 +75,39 @@
           Map
         </h3>
         <p>You can see a map of the building.</p>
-        <img src="{% static 'evacuation/images/walkthrough-map.png' %}" class="tutorial-image">
+        <img src="{% static 'walkthrough/images/walkthrough-map.png' %}" class="tutorial-image">
       </li>
       <li class='screen'>
         <h3>
           Exit routes
         </h3>
-        <p>Click anywhere on the map to get the an exit route.</p>
-        <img src="{% static 'evacuation/images/walkthrough-route.png' %}" class="tutorial-image">
-        <img src="{% static 'evacuation/images/tap-hand.png' %}" class="tap-image">
+        <p>Tap anywhere on the map to get the an exit route.</p>
+        <img src="{% static 'walkthrough/images/walkthrough-route.png' %}" class="tutorial-image">
+        <img src="{% static 'walkthrough/images/tap-hand.png' %}" class="tap-image">
+      </li>
+      <li class='screen'>
+        <h3>
+          Blocked exits
+        </h3>
+        <p>Blocked exits will be shown along with alternative exit routes.</p>
+        <img src="{% static 'walkthrough/images/walkthrough-blocked.png' %}" class="tutorial-image">
       </li>
       <li class='screen'>
         <h3>
           Assembly area
         </h3>
-        <p>Zoom out in order to see the full route to the assembly area.</p>
-        <img src="{% static 'evacuation/images/walkthrough-assembly.png' %}" class="tutorial-image">
+        <p>Zoom out or tap the "View assembly area" button in order to see the full route to the assembly area.</p>
+        <img src="{% static 'walkthrough/images/walkthrough-assembly.png' %}" class="tutorial-image">
       </li>
       {% endif %}
       <li class='screen'>
         <h3>
           Done
         </h3>
-        <p>Thanks for going through this tutorial</p>
+        <p>Thanks for going through this tutorial. Please take a moment to explore the app yourself.</p>
         <form action="/">
           <input type="hidden" name="seen_tutorial" value="{{ seen_tutorial }}" />
-          <button type="submit" class="btn btn-outline-success">
-            <i class="fa fa-check"></i>&nbsp; Close
-          </button>
+          <button type="submit" class="btn btn-outline-success">Close</button>
         </form>
       </li>
     </ul>
