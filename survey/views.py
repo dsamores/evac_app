@@ -16,12 +16,14 @@ def index(request):
                 messages.add_message(request, messages.INFO, "Survey already taken")
                 return render(request, 'survey/survey.html')
             groups = request.user.groups.all()
-            survey = Survey.objects.filter(group_features__in=groups, group_landmarks__in=groups, active=True)
-            questions = Question.objects.filter(survey=survey[0]).order_by('order')
+            survey = Survey.objects.filter(group_features__in=groups, group_landmarks__in=groups, active=True)[0]
+            questions = Question.objects.filter(survey=survey).order_by('order')
             evac_user = EvacUser.objects.get(user=request.user)
+            has_taken = Answer.objects.filter(question=questions[0], user=request.user).exists()
             context = {
                 'survey': questions,
-                'floor': evac_user.floor
+                'floor': evac_user.floor,
+                'has_taken': has_taken,
             }
             return render(request, 'survey/survey.html', context)
         return render(request, 'evacuation/login.html')

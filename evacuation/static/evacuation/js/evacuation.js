@@ -25,7 +25,6 @@ function Interaction(type, description, page, element){
 function flushInteractions(){
     var interactions = localStorage.getItem("interactions");
     if(interactions){
-        //interactions = JSON.parse(interactions);
         $.post("/save_interactions", { interactions: interactions })
             .done(function( response ) {
                 console.log(response);
@@ -71,7 +70,8 @@ $(document).ready(function($) {
     }, 5000);
 
     setInterval(function() {
-        checkShouldReload();
+        if(window.location.href.includes("building-map"))
+            checkShouldReload();
     }, 3000);
 });
 

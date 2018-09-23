@@ -9,6 +9,14 @@
 {% endblock %}
 
 {% block content %}
+{% if has_taken %}
+<div class="col-12">
+    <div class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
+        <span class="badge badge-pill badge-primary">Info</span>
+            Thanks for taking our survey!
+    </div>
+</div>
+{% else %}
 <div class="col-12">
     {% if messages %}
         {% for message in messages %}
@@ -190,7 +198,9 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
+
 {% block scripts %}
 <script type="text/javascript" src="{% static 'survey/js/jquery-migrate-1.4.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'survey/js/raphael-2.0.1.min.js' %}"></script>
