@@ -8,6 +8,8 @@ var zoom;
 var minZoom, maxZoom;
 var maxBounds;
 
+var freezeFloor;
+
 var areMarkersDisplayed = false;
 
 var obstacleIcon = L.icon({
@@ -221,6 +223,8 @@ $(document).ready(function($) {
 
     map.on('floorChange', function (e) {
         currentFloor = e.floor;
+        if(currentFloor != null)
+            freezeFloor = currentFloor;
         if(startLocation && startLocation.marker){
             if(startLocation.floor == currentFloor){
                 startLocation.marker.addTo(map);
@@ -294,6 +298,10 @@ $(document).ready(function($) {
 
     $("#button-assembly-area").click(function (){
         map.setView(new L.LatLng(-37.802894303416345, 144.96115372516218), 17);
+    });
+
+    map.on('venueEnter', function (e) {
+        map.setFloor(freezeFloor);
     });
 
 });
