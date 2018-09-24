@@ -6,3 +6,5 @@ data/
 /static/
 evac_app.pem
 local_settings.py
+evac_app.ppk
+backup/
