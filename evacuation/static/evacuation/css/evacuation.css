@@ -152,8 +152,8 @@
 }
 .assembly-overlay{
     position: absolute;
-    left: 70px;
-    top: 10px;
+    left: 25px;
+    top: 5px;
     z-index: 1000;
 }
 .assembly-overlay button{
@@ -179,6 +179,20 @@
 .assembly-overlay button:active {
   background-color: #aaa;
 }
+.office-overlay{
+    position: absolute;
+    right: 20px;
+    top: 180px;
+    z-index: 1000;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+.office-overlay select {
+    font-size: 16px;
+    padding: 0;
+}
+
 .content{
     position: relative;
 }
@@ -188,7 +202,10 @@
         right: 25px;
     }
     .assembly-overlay{
-        left: 60px;
+        left: 15px;
+    }
+    .office-overlay{
+        right: 15px;
     }
 }
 

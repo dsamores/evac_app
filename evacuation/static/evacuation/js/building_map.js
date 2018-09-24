@@ -189,6 +189,7 @@ $(document).ready(function($) {
         mapwizeAttribution: false,
         floorControlOptions: {'position': 'topright'},
         displayPlaces: false,
+        zoomControl: false,
     }, function (err, mapInstance) {
         if (err) {
             console.error('An error occur during map initialization', err);
@@ -268,6 +269,7 @@ $(document).ready(function($) {
             areMarkersDisplayed = true;
         }
         saveMapEvent('map-floorChange');
+        changeOfficeSelect(currentFloor);
     });
 
     map.on('zoomstart', function(e) {
@@ -298,13 +300,32 @@ $(document).ready(function($) {
 
     $("#button-assembly-area").click(function (){
         map.setView(new L.LatLng(-37.802894303416345, 144.96115372516218), 17);
+        (new Interaction('assembly-area-button', '', window.location.href, null)).save();
     });
 
     map.on('venueEnter', function (e) {
         map.setFloor(freezeFloor);
     });
 
+
+    $("#office-select").change(function (){
+        var val = $(this).val();
+        var office = offices[val];
+        displayExitRoute(office[1], office[2], 'office-exitroute');
+    });
+
 });
+
+function changeOfficeSelect(floor){
+    var officeSelect = $("#office-select");
+    officeSelect.empty();
+    officeSelect.append($("<option />").val("").text("--"));
+    $.each(offices, function(name, value) {
+        if(value[0] == floor){
+            officeSelect.append($("<option />").val(name).text(name));
+        }
+    });
+}
 
 function displayExitRoute(lat, lng, eventName, markerText){
     zoom = map.getZoom();

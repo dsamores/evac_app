@@ -138,6 +138,9 @@ def building_map(request):
     else:
         landmarks = Place.objects.filter(active=True, is_landmark=False)
 
+    offices = {office.name: [office.floor, office.latitude, office.longitude] for office in Office.objects.all()}
+
+
     evac_user = EvacUser.objects.get(user=request.user)
 
     if evac_user.desk:
@@ -151,6 +154,7 @@ def building_map(request):
         'seen_tutorial': evac_user.seen_tutorial,
         'obstacles': serializers.serialize('json', obstacles),
         'landmarks': serializers.serialize('json', landmarks),
+        'offices': json.dumps(offices),
         'floor': evac_user.floor if evac_user.floor else 1,
         'desk_lat': lat,
         'desk_lon': lon,
