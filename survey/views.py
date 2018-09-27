@@ -22,7 +22,7 @@ def index(request):
             has_taken = Answer.objects.filter(question=questions[0], user=request.user).exists()
             context = {
                 'survey': questions,
-                'floor': evac_user.floor,
+                'floor': evac_user.floor if evac_user.floor else 1,
                 'has_taken': has_taken,
             }
             return render(request, 'survey/survey.html', context)

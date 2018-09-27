@@ -256,7 +256,7 @@
         $("#editor_{{ question.id }}").find("img").attr("src", floorImage);
       });
 
-      $("#change_floor_{{ question.id }}").val({{ floor }}).change();
+      $("#change_floor_{{ question.id }}").val("{{ floor }}").change();
 
       $("#properties_{{ question.id }}").val(
         $("#editor_{{ question.id }}").find("img").width() + "," + $("#editor_{{ question.id }}").find("img").height()
