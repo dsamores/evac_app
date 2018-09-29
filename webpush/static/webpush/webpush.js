@@ -63,15 +63,18 @@ window.addEventListener('load', function() {
       if (Notification.permission === 'denied') {
         subBtn.textContent = 'Push Messaging Blocked.';
         subBtn.disabled = true;
+        (new Interaction('push-blocked', '', window.location.href, null)).save();
         return;
       }
 
       if (isSubscribed) {
         subBtn.textContent = 'Already subscribed. Thanks!';
         subBtn.disabled = true;
+        (new Interaction('push-subscribed', '', window.location.href, null)).save();
       } else {
         subBtn.textContent = 'Enable Push Messaging';
         subBtn.disabled = false;
+        (new Interaction('push-not-subscribed-yet', '', window.location.href, null)).save();
         if(window.location.href.includes("alerts")){
             subBtn.click();
         }
