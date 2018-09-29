@@ -217,6 +217,7 @@ $(document).ready(function($) {
 
     map.on('click', function (e) {
         console.log('lat:', e.latlng.lat, 'lon:', e.latlng.lng);
+        (new Interaction('map-click', 'lat:' + e.latlng.lat + ',lon:' + e.latlng.lng, window.location.href, null)).save();
         if(insideBuilding([e.latlng.lat, e.latlng.lng])){
             displayExitRoute(e.latlng.lat, e.latlng.lng, 'map-exitroute');
         }
