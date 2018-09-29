@@ -47,6 +47,8 @@ class Question(models.Model):
     )
     choices = models.ForeignKey(ChoiceGroup, on_delete=models.CASCADE, blank=True, null=True)
     required = models.BooleanField(default=True)
+    depends_on_question = models.ForeignKey('Question', on_delete=models.CASCADE, blank=True, null=True)
+    depends_on_text = models.CharField(max_length=127, blank=True, null=True)
 
     def __str__(self):
         return '(%s) %s...' % (self.survey, self.text[:20])

@@ -55,137 +55,127 @@
             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                 {% csrf_token %}
                 {% for question in survey %}
+                    <div class="row form-group" id="container_q_{{ question.id }}" {% if question.depends_on_question %}style="display: none;"{% endif %}>
                     {% if question.type == 'Text' %}
-                        <div class="row form-group">
-                            <div class="col-12">
-                                <label for="q_{{ question.id }}" class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
-                            </div>
-                            <div class="col-12">
-                                <textarea name="q_{{ question.id }}" id="q_{{ question.id }}" rows="3" placeholder="" class="form-control" {{ question.required|yesno:"required," }}></textarea>
-                            </div>
+                        <div class="col-12">
+                            <label for="q_{{ question.id }}" class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                        </div>
+                        <div class="col-12">
+                            <textarea name="q_{{ question.id }}" id="q_{{ question.id }}" rows="3" placeholder="" class="form-control" {{ question.required|yesno:"required," }}></textarea>
                         </div>
                     {% elif question.type == 'SingleChoice' %}
-                        <div class="row form-group">
-                            <div class="col-12">
-                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-check">
+                        <div class="col-12">
+                            <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-check">
+                              {% for choice in question.get_choices %}
+                                <div class="radio">
+                                  <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                    <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" {{ question.required|yesno:"required," }}>{{ choice.text }}
+                                  </label>
+                                </div>
+                              {% endfor %}
+                          </div>
+                        </div>
+                    {% elif question.type == 'SingleChoiceOther' %}
+                        <div class="col-12">
+                            <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-check">
+                              {% for choice in question.get_choices %}
+                                <div class="radio">
+                                  <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
+                                    <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" {{ question.required|yesno:"required," }}>{{ choice.text }}
+                                  </label>
+                                </div>
+                              {% endfor %}
+                                <div class="radio">
+                                  <label for="q_{{ question.id }}_c_other" class="form-check-label ">
+                                    <input type="radio" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input" {{ question.required|yesno:"required," }}>Other:
+                                      <input type="text" name="other_{{ question.id }}" class="form-control">
+                                  </label>
+                                </div>
+                          </div>
+                        </div>
+                    {% elif question.type == 'MultipleChoice' %}
+                        <div class="col-12">
+                            <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-check">
+                              <div class="checkbox-group {{ question.required|yesno:'required,' }}">
                                   {% for choice in question.get_choices %}
-                                    <div class="radio">
+                                    <div class="checkbox">
                                       <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" {{ question.required|yesno:"required," }}>{{ choice.text }}
+                                        <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
                                       </label>
                                     </div>
                                   {% endfor %}
                               </div>
-                            </div>
+                          </div>
                         </div>
-                    {% elif question.type == 'SingleChoiceOther' %}
-                        <div class="row form-group">
-                            <div class="col-12">
-                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-check">
+                    {% elif question.type == 'MultipleChoiceOther' %}
+                        <div class="col-12">
+                            <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-check">
+                              <div class="checkbox-group {{ question.required|yesno:'required,' }}">
                                   {% for choice in question.get_choices %}
-                                    <div class="radio">
+                                    <div class="checkbox">
                                       <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                        <input type="radio" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input" {{ question.required|yesno:"required," }}>{{ choice.text }}
+                                        <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
                                       </label>
                                     </div>
                                   {% endfor %}
-                                    <div class="radio">
+                                    <div class="checkbox">
                                       <label for="q_{{ question.id }}_c_other" class="form-check-label ">
-                                        <input type="radio" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input" {{ question.required|yesno:"required," }}>Other:
+                                        <input type="checkbox" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input">Other:
                                           <input type="text" name="other_{{ question.id }}" class="form-control">
                                       </label>
                                     </div>
                               </div>
-                            </div>
-                        </div>
-                    {% elif question.type == 'MultipleChoice' %}
-                        <div class="row form-group">
-                            <div class="col-12">
-                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-check">
-                                  <div class="checkbox-group {{ question.required|yesno:'required,' }}">
-                                      {% for choice in question.get_choices %}
-                                        <div class="checkbox">
-                                          <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                            <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
-                                          </label>
-                                        </div>
-                                      {% endfor %}
-                                  </div>
-                              </div>
-                            </div>
-                        </div>
-                    {% elif question.type == 'MultipleChoiceOther' %}
-                        <div class="row form-group">
-                            <div class="col-12">
-                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-check">
-                                  <div class="checkbox-group {{ question.required|yesno:'required,' }}">
-                                      {% for choice in question.get_choices %}
-                                        <div class="checkbox">
-                                          <label for="q_{{ question.id }}_c_{{ choice.id }}" class="form-check-label ">
-                                            <input type="checkbox" id="q_{{ question.id }}_c_{{ choice.id }}" name="q_{{ question.id }}" value="c_{{ choice.id }}" class="form-check-input">{{ choice.text }}
-                                          </label>
-                                        </div>
-                                      {% endfor %}
-                                        <div class="checkbox">
-                                          <label for="q_{{ question.id }}_c_other" class="form-check-label ">
-                                            <input type="checkbox" id="q_{{ question.id }}_c_other" name="q_{{ question.id }}" value="c_other" class="form-check-input">Other:
-                                              <input type="text" name="other_{{ question.id }}" class="form-control">
-                                          </label>
-                                        </div>
-                                  </div>
-                              </div>
-                            </div>
+                          </div>
                         </div>
                     {% elif question.type == 'Sketch' %}
-                        <div class="row form-group">
-                            <div class="col-12">
-                                <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
-                            </div>
-                            <div class="col col-sm-2"><label for="change_floor_{{ question.id }}" class=" form-control-label">Change floor:</label></div>
-                            <div class="col-12 col-sm-3">
-                              <select name="floor_{{ question.id }}" id="change_floor_{{ question.id }}" class="form-control">
-                                <option value="0">Ground level</option>
-                                <option value="1">First level</option>
-                                <option value="2">Second level</option>
-                                <option value="3">Third level</option>
-                              </select>
-                            </div>
-                            <div class="col-12">
-                                <div class="col col-sm-4">
-                                    <button type="button" class="btn btn-outline-success" id="start-drawing">
-                                        <i class="fa fa-pencil"></i>&nbsp; Draw
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger" id="stop-drawing" style="display: none;">
-                                        <i class="fa fa-times"></i>&nbsp; Done
-                                    </button>
-                                    <button type="button" class="btn btn-outline-primary" id="undo-drawing" style="display: none;">
-                                        <i class="fa fa-undo"></i>&nbsp; Undo
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-check">
-                                <div id="editor_{{ question.id }}" class="sketchpad">
-                                    <img src="{% static 'survey/images/3.png' %}" class="background-floor-image" />
-                                </div>
-                                <input type="hidden" name="q_{{ question.id }}" id="q_{{ question.id }}" />
-                                <input type="hidden" name="properties_{{ question.id }}" id="properties_{{ question.id }}" />
-                              </div>
+                        <div class="col-12">
+                            <label class=" form-control-label">{{ forloop.counter }}. {{ question.text }}</label>
+                        </div>
+                        <div class="col col-sm-2"><label for="change_floor_{{ question.id }}" class=" form-control-label">Change floor:</label></div>
+                        <div class="col-12 col-sm-3">
+                          <select name="floor_{{ question.id }}" id="change_floor_{{ question.id }}" class="form-control">
+                            <option value="0">Ground level</option>
+                            <option value="1">First level</option>
+                            <option value="2">Second level</option>
+                            <option value="3">Third level</option>
+                          </select>
+                        </div>
+                        <div class="col-12">
+                            <div class="col col-sm-4">
+                                <button type="button" class="btn btn-outline-success" id="start-drawing">
+                                    <i class="fa fa-pencil"></i>&nbsp; Draw
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" id="stop-drawing" style="display: none;">
+                                    <i class="fa fa-times"></i>&nbsp; Done
+                                </button>
+                                <button type="button" class="btn btn-outline-primary" id="undo-drawing" style="display: none;">
+                                    <i class="fa fa-undo"></i>&nbsp; Undo
+                                </button>
                             </div>
                         </div>
+                        <div class="col-12">
+                          <div class="form-check">
+                            <div id="editor_{{ question.id }}" class="sketchpad">
+                                <img src="{% static 'survey/images/3.png' %}" class="background-floor-image" />
+                            </div>
+                            <input type="hidden" name="q_{{ question.id }}" id="q_{{ question.id }}" />
+                            <input type="hidden" name="properties_{{ question.id }}" id="properties_{{ question.id }}" />
+                          </div>
+                        </div>
                     {% endif %}
+                    </div>
                 {% endfor %}
                 {% if survey %}
                 <div class="form-actions form-group">
@@ -262,6 +252,16 @@
         $("#editor_{{ question.id }}").find("img").width() + "," + $("#editor_{{ question.id }}").find("img").height()
       );
 
+    {% endif %}
+    {% if question.depends_on_question %}
+        $("input[name='q_{{ question.depends_on_question.id }}']").change(function (){
+            if($(this).parent().text().trim() == '{{ question.depends_on_text }}'){
+                $("#container_q_{{ question.id }}").show();
+            }
+            else{
+                $("#container_q_{{ question.id }}").hide();
+            }
+        });
     {% endif %}
 {% endfor %}
 </script>
