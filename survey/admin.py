@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from .models import Survey, Question, ChoiceGroup, Choice
 
-admin.site.register(Survey)
 admin.site.register(ChoiceGroup)
 
 
@@ -22,5 +21,10 @@ class ChoiceAdmin(admin.ModelAdmin):
         return '%s%s' % (obj.text[:30], '...' if len(obj.text) > 30 else '')
 
 
+class SurveyAdmin(admin.ModelAdmin):
+    list_display = ('name', 'active')
+
+
+admin.site.register(Survey, SurveyAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice, ChoiceAdmin)
