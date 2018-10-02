@@ -231,3 +231,13 @@
 }
 .mapwize-marker-icon { display: none !important; }
 .mapwize-marker-icon ~ .mapwize-marker-icon { display: block !important; }
+
+.required-info {
+    color: red;
+    font-style: italic;
+}
+.optional-info {
+    color: orange;
+    font-style: italic;
+    font-size: 14px;
+}
