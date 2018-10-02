@@ -231,7 +231,7 @@
             officeSelect.empty();
             officeSelect.append($("<option />").val("").text("-- Choose office --"));
             if(val != ""){
-                var result = Object.keys(floorOfficeDesks[val]);
+                var result = Object.keys(floorOfficeDesks[val]).sort();
                 $.each(result, function() {
                     officeSelect.append($("<option />").val(this).text(this));
                 });

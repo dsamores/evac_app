@@ -27,6 +27,7 @@ class OfficeAdmin(admin.ModelAdmin):
         'name',
         'floor',
     )
+    list_filter = ('floor',)
 
 
 @admin.register(Desk)
@@ -36,6 +37,7 @@ class DeskAdmin(admin.ModelAdmin):
         'name',
         'office',
     )
+    list_filter = ('office__floor',)
 
 
 @admin.register(Place)
