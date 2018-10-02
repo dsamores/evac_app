@@ -241,3 +241,6 @@
     font-style: italic;
     font-size: 14px;
 }
+#office-select {
+    max-width: 50px;
+}
