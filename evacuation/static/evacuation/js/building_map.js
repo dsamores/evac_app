@@ -321,10 +321,15 @@ function changeOfficeSelect(floor){
     var officeSelect = $("#office-select");
     officeSelect.empty();
     officeSelect.append($("<option />").val("").text("--"));
-    $.each(offices, function(name, value) {
-        if(value[0] == floor){
-            officeSelect.append($("<option />").val(name).text(name));
+    var floorOffices = [];
+    for(var officeName in offices){
+        if(offices[officeName][0] == floor){
+            floorOffices.push(officeName);
         }
+    }
+    floorOffices.sort();
+    $.each(floorOffices, function(index, name) {
+        officeSelect.append($("<option />").val(name).text(name));
     });
 }
 
