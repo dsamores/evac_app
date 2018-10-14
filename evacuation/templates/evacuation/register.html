@@ -60,6 +60,15 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
+                {% if True %}
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                            <span class="badge badge-pill badge-danger">Error</span>
+                                Registrations are closed.
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                {% else %}
                 <div class="login-form">
                     <div class="form-group required-info">*Required field</div>
                     <form method="post" action="register">
@@ -214,6 +223,7 @@
                         </div>
                     </form>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
