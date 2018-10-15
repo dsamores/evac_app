@@ -32,7 +32,7 @@
 
 </head>
 <body>
-
+{% if request.user.is_authenticated %}
     <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
 
@@ -80,7 +80,7 @@
             </div>
         </nav>
     </aside>
-
+{% endif %}
     <div id="right-panel" class="right-panel">
 
         <header id="header" class="header">
